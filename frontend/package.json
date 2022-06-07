@@ -24,6 +24,7 @@
     "react-dom": "18.1.0",
     "react-hook-form": "^7.31.2",
     "react-icons": "^4.4.0",
+    "react-table": "^7.8.0",
     "rxjs": "^7.5.5",
     "sweetalert2": "^11.4.17",
     "sweetalert2-react-content": "^5.0.0",
