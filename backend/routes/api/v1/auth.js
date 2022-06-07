@@ -1,9 +1,9 @@
 import express from 'express'
 import morgan from 'morgan'
-import authController from '../../controllers/api/auth.js'
-import validateUser from '../../validators/user.js'
-import validateSignIn from '../../validators/signin.js'
-import Auth from '../../middlewares/auth.js'
+import authController from '#controllers/api/auth.js'
+import validateUser from '#validators/user.js'
+import validateSignIn from '#validators/signin.js'
+import Auth from '#middlewares/auth.js'
 
 const AuthController = new authController
 const router = express.Router()

@@ -9,6 +9,11 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
+  "imports": {
+    "#controllers/*":"./controllers/*",
+    "#validators/*":"./validators/*",
+    "#middlewares/*":"./middlewares/*"
+  },
   "author": "Aulia",
   "license": "ISC",
   "dependencies": {

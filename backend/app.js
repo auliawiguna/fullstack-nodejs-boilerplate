@@ -4,8 +4,8 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import route from './routes/route.js'
 import initialiser from './config/init/index.js'
-import setTZ from 'set-tz';
-
+import setTZ from 'set-tz'
+import module_alias from 'module-alias/register.js'
 
 dotenv.config()
 

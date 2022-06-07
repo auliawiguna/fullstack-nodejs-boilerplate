@@ -1,10 +1,10 @@
 import express from 'express'
 import morgan from 'morgan'
-import PermissionController from '../../controllers/api/permissions.js'
-import validate from '../../validators/permission.js'
-import Auth from '../../middlewares/auth.js'
-import canAccess from '../../middlewares/canAccess.js'
-import verified from '../../middlewares/verified.js'
+import PermissionController from '#controllers/api/permissions.js'
+import validate from '#validators/permission.js'
+import Auth from '#middlewares/auth.js'
+import canAccess from '#middlewares/canAccess.js'
+import verified from '#middlewares/verified.js'
 
 const Permission = new PermissionController
 const router = express.Router()

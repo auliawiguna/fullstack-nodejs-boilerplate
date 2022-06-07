@@ -1,10 +1,10 @@
 import express from 'express'
 import morgan from 'morgan'
-import RoleController from '../../controllers/api/roles.js'
-import validate from '../../validators/role.js'
-import Auth from '../../middlewares/auth.js'
-import canAccess from '../../middlewares/canAccess.js'
-import verified from '../../middlewares/verified.js'
+import RoleController from '#controllers/api/roles.js'
+import validate from '#validators/role.js'
+import Auth from '#middlewares/auth.js'
+import canAccess from '#middlewares/canAccess.js'
+import verified from '#middlewares/verified.js'
 
 const Role = new RoleController
 const router = express.Router()

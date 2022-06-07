@@ -1,7 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
-import PostGroupController from '../../controllers/api/postgroups.js'
-import validate from '../../validators/postgroups.js'
+import PostGroupController from '#controllers/api/postgroups.js'
+import validate from '#validators/postgroups.js'
 
 const PostGroup = new PostGroupController
 const router = express.Router()

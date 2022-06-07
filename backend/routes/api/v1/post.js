@@ -1,7 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
-import PostController from '../../controllers/api/posts.js'
-import validate from '../../validators/posts.js'
+import PostController from '#controllers/api/posts.js'
+import validate from '#validators/posts.js'
 
 const Post = new PostController
 const router = express.Router()

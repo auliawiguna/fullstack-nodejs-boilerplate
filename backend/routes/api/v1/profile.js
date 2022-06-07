@@ -1,9 +1,9 @@
 import express from 'express'
 import morgan from 'morgan'
-import profileController from '../../controllers/api/profile.js'
-import validateUser from '../../validators/user.js'
-import Auth from '../../middlewares/auth.js'
-import verified from '../../middlewares/verified.js'
+import profileController from '#controllers/api/profile.js'
+import validateUser from '#validators/user.js'
+import Auth from '#middlewares/auth.js'
+import verified from '#middlewares/verified.js'
 
 const Profile = new profileController
 const router = express.Router()

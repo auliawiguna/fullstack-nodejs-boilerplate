@@ -1,68 +1,71 @@
-import indexRoute from './web/index.js'
 import fs from 'fs'
 import { join } from 'path'
 import path from 'path';
 import _ from 'lodash';
 import {fileURLToPath} from 'url'
 import Pluralize from 'pluralize'
-import dotenv from 'dotenv'
+
+const getAllFiles = async (dirPath, arrayOfFiles) => {
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = path.dirname(__filename)
+
+  let files = fs.readdirSync(dirPath)
+
+  arrayOfFiles = arrayOfFiles || []
+
+  files.forEach(function(file) {
+    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+      arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
+    } else {
+      arrayOfFiles.push(path.join(dirPath, "/", file))
+    }
+  })
+
+  return arrayOfFiles
+}
 
 const listApiRoute = async (app) => {
-  dotenv.config()
-
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = path.dirname(__filename)
 
   const models = {}
   
-  Promise.all(
-    (await fs.promises.readdir(`${join(__dirname, '../routes/api')}`))
-    .filter(model => model !== 'index.js')
-    .map((model) => {
-      var fileModel = `${Pluralize(path.parse(model).name.toLowerCase())}`
-      models[fileModel] = `./api/${model}`
-    })
-  )
+  const allApiRoute = await getAllFiles(`${join(__dirname, '../routes/api')}`)
+
+  for (const[index, filePath] of Object.entries(allApiRoute)) {
+    let urlPath = Pluralize(filePath.replace(__dirname, '').replace('.js', '').toLowerCase())
+    var model = await import(filePath)
+    app.use(`${urlPath}`, model.default)    
+    models[urlPath] = filePath
+  }
 
   if (process.env.NODE_ENV!=='production') {
       console.log('API Route List :')
       console.table(models)            
   }
 
-  for (const [modelName, modelPath] of Object.entries(models)) {
-    var model = await import(modelPath)
-    app.use(`/api/v1/${modelName}`, model.default)
-  }  
-
   return app
 }
  
 const listWebRoute = async (app) => {
-  dotenv.config()
-
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = path.dirname(__filename)
 
   const models = {}
   
-  Promise.all(
-    (await fs.promises.readdir(`${join(__dirname, '../routes/web')}`))
-    .map((model) => {
-      var fileModel = `${Pluralize(path.parse(model).name.toLowerCase())}`
-      models[fileModel] = `./web/${model}`
-    })
-  )
+  const allApiRoute = await getAllFiles(`${join(__dirname, '../routes/web')}`)
+
+  for (const[index, filePath] of Object.entries(allApiRoute)) {
+    let urlPath = Pluralize(filePath.replace(__dirname, '').replace('.js', '').toLowerCase())
+    var model = await import(filePath)
+    app.use(`${urlPath}`, model.default)    
+    models[urlPath] = filePath
+  }
 
   if (process.env.NODE_ENV!=='production') {
       console.log('Web Route List :')
       console.table(models)            
   }
-
-  for (const [modelName, modelPath] of Object.entries(models)) {
-    let model = await import(modelPath)
-    let path = modelName=='index' || modelName=='indices' ? '/' : modelName
-    app.use(path, model.default)
-  }  
 
   return app
 }

@@ -1,10 +1,10 @@
 import express from 'express'
 import morgan from 'morgan'
-import UserController from '../../controllers/api/users.js'
-import validate from '../../validators/user.js'
-import Auth from '../../middlewares/auth.js'
-import canAccess from '../../middlewares/canAccess.js'
-import verified from '../../middlewares/verified.js'
+import UserController from '#controllers/api/users.js'
+import validate from '#validators/user.js'
+import Auth from '#middlewares/auth.js'
+import canAccess from '#middlewares/canAccess.js'
+import verified from '#middlewares/verified.js'
 
 const User = new UserController
 const router = express.Router()
