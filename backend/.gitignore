@@ -1,0 +1,6 @@
+node_modules
+vendors
+package-lock.json
+.env
+config/config.json
+uploads/*
