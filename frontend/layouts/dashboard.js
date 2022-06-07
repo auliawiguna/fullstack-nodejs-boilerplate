@@ -1,8 +1,8 @@
 import { Dashboard } from '@components/dashboard'
 
-export const DashboardLayout = ({ children }) => {
+export const DashboardLayout = ({ children, title}) => {
     return (
-        <Dashboard>{children}</Dashboard>
+        <Dashboard title={title}>{children}</Dashboard>
     )
 }
 

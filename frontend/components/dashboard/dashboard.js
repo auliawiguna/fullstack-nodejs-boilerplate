@@ -1,10 +1,10 @@
 import Header from './header';
 import Sidebar from './sidebar';
-import { Flex, useColorModeValue, Box } from '@chakra-ui/react';
+import { Flex, useColorModeValue, Box, Heading } from '@chakra-ui/react';
 
 const SidebarDesktop = Sidebar.SidebarDesktop
 
-export default function Dashboard({ children }) {
+export default function Dashboard({ children, title }) {
   const bgColor = useColorModeValue('white', 'gray.800');
   const bgColorGray = useColorModeValue('gray.100');
 
@@ -25,6 +25,10 @@ export default function Dashboard({ children }) {
             bg={bgColorGray}
           >
             <Box boxShadow='xs' p='6' rounded='md' bg={bgColor}>
+              <Box px={0} py={4} w="full">
+                <Heading as="h3" size="lg">{title ?? ''}</Heading>
+              </Box>
+
               {children}
             </Box>
           </Box>
