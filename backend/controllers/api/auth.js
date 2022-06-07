@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-
+import _ from 'lodash'
 export default class AuthController {
     /**
      * Handle user sign up
@@ -209,7 +209,7 @@ export default class AuthController {
         try {
             token = token.toString()
             let tokenAuth = await personalaccesstokenModel.findToken(token, req)
-            if (tokenAuth === null) {
+            if (tokenAuth === null || !tokenAuth.user || !tokenAuth.token) {
                 return APIResponses.unAuthorized(res, "Unauthorised")
             } else {
                 let user = await userRepository.findByEmailForLogin(tokenAuth.user.email)

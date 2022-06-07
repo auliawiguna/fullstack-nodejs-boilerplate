@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 /**
  * Handle database operations on User Model
  */
@@ -84,7 +86,7 @@ class User {
         userObj.roles_id = userObj.roles.map(({id}) => id)
         userObj.permissions_name = permissionNameArray
         userObj.permissions_id = permissionIdArray
-        userObj.avatar_url = typeof userObj.avatar.id != 'undefined' ? `/api/v1/profiles/stream-avatar/${userObj.avatar.id}` : ''
+        userObj.avatar_url = !_.isNil(userObj.avatar) ? `/api/v1/profiles/stream-avatar/${userObj.avatar.id}` : ''
 
         return userObj
     }    

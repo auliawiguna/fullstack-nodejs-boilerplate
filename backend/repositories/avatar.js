@@ -1,12 +1,13 @@
 import fs from 'fs'
 import { join } from 'path'
+import _ from 'lodash'
 
 /**
  * Handle database operations on Avatar Model
  */
 class Avatar {
     updateUserAvatar = async (userId, file) => {
-        if (typeof file.originalname == 'undefined') {
+        if (_.isNil(file.originalname)) {
             return
         }
         const currentAvatar = await avatarModel.findOne({
