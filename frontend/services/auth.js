@@ -26,6 +26,22 @@ const login = async (url, username, password) => {
     })
 }
 
+const loginNextAuth = async (url, username, password) => {
+    return await axios.post(url, {
+        email: username,
+        password: password,
+        device_name: "web"
+    }).then((response) => {
+        if (response.data.data.token) {
+            let authData = response.data.data
+            return authData
+        } else {
+            return false
+        }
+    })
+}
+
+
 const logout = async (url) => {
     // remove user from local storage, publish null to user subscribers and redirect to login page
     return await axios.post(url).then((response) => {
@@ -63,6 +79,7 @@ const AuthService = {
     user: userSubject.asObservable(),
     get userValue () { return userSubject.value },    
     login,
+    loginNextAuth,
     logout,
     validateToken
 }
