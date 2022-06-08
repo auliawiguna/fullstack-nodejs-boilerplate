@@ -69,7 +69,7 @@ export default class AuthController {
                 return APIResponses.success(res, {
                     token: token.plainTextToken,
                     user: {
-                        name: user.name,
+                        name: `${user.first_name} ${user.last_name}`,
                         id: user.id,
                         email: user.email,
                         roles: user.roles ?? []
