@@ -6,6 +6,8 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { extendTheme } from "@chakra-ui/react"
 import { Fonts } from '@components/fonts'
+import { SessionProvider, signIn, useSession } from 'next-auth/react'
+import React from 'react'
 
 const theme = extendTheme({
   fonts: {
@@ -23,15 +25,44 @@ Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
 Router.events.on('routeChangeError', () => NProgress.done())
 
-function MyApp({ Component, pageProps }) {
-  return ( 
+
+export default function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
+  return (
     <ChakraProvider theme={theme}>
       <Fonts />
-      <RouteGuard>
-        <Component {...pageProps} /> 
-      </RouteGuard>
+      <SessionProvider session={session}>
+        {Component.auth ? (
+          <Auth>
+            <Component {...pageProps} />
+          </Auth>
+        ) : (
+          <Component {...pageProps} />
+        )}
+      </SessionProvider>
     </ChakraProvider>
   )
 }
 
-export default MyApp
+function Auth({ children }) {
+  const { data: session, status } = useSession()
+  const isUser = !!session?.user
+  React.useEffect(() => {
+    if (status === "loading") {
+      return
+    }
+    if (!isUser) {
+      signIn()
+    }
+  }, [isUser, status])
+
+  if (isUser) {
+    return children
+  }
+
+  // Session is being fetched, or no user.
+  // If no user, useEffect() will redirect.
+  return <div>Loading...</div>
+}

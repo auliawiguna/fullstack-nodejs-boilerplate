@@ -27,7 +27,12 @@ export default NextAuth({
                         console.log(authData)
                         console.log('====================================')
                     }
-                    return authData                        
+                    return {
+                        access_token:authData.token,
+                        name :authData.user.name,
+                        email:authData.user.email,
+                        id   :authData.user.id
+                    }                        
                 } catch (error) {
                     console.log(error.message);
                     
@@ -37,35 +42,44 @@ export default NextAuth({
     ],
     secret:process.env.JWT_SECRET,
     pages: {
-        signIn: '/pages/auth'
+        signIn: '/auth'
     },
     callbacks: {
-        async jwt(data) {
-            if (process.env.NODE_ENV!='production') {
-                console.log('============DATA JWT================')
-                console.log(data)
-                console.log('====================================')
+        async jwt({ token, user, account, isNewUser }) {// This user return by provider {} as you mentioned above MY CONTENT {token:}
+            if (user) {
+                console.log(user);
+                if (user.access_token) {
+                    token = { 
+                        accessToken: user.access_token, 
+                        name       :user.name, 
+                        email      :user.email ,
+                        user_id    :user.id,
+                    }
+                }
             }
-            return {
-                id: data.user.user.id,
-                email: data.user.user.email,
-                accessToken: data.usertoken,
-            }
-        },
 
-        async session(dataSession) {
-            if (process.env.NODE_ENV!='production') {
-                console.log('==========DATA SESSION==============')
-                console.log(dataSession)
-                console.log('====================================')
-            }
-            session.token = dataSession.token
-        }
+            return token;
+        },
+    
+        // That token store in session
+        async session({ session, token }) { // this token return above jwt()
+            session.accessToken = token.accessToken;
+            session.user_id = token.user_id;
+            //if you want to add user details info
+            // session.user = { name: "name", email: "email" };//this user info get via API call or decode token. Anything you want you can add
+
+            return session;
+        },
     },
     theme: {
         colorScheme: 'auto',
         brandColor: '',
         logo: ''
+    },
+    session: {
+        jwt: true,
+        maxAge: 30 * 24 * 60 * 60
+
     },
     debug: process.env.NODE_ENV != 'production'
 })

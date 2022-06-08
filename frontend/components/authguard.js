@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import AuthService from '@services/auth'
 import Swal from 'sweetalert2'
 import { ROUTE } from '@config/constants'
+import { SessionProvider, signIn, signOut } from 'next-auth/react'
 
 export { RouteGuard }
 
@@ -39,6 +40,8 @@ function RouteGuard({ children }) {
 
         let apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auths/auth-validate`
         let checkTokenAuth = await AuthService.validateToken(apiUrl, checkToken.token)
+        setAuthorized(true)
+        return
 
         if (typeof checkTokenAuth.token != 'undefined') {
             //Auth
