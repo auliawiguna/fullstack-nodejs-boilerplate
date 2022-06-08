@@ -18,6 +18,7 @@
     "dotenv": "^16.0.1",
     "framer-motion": "^6.3.3",
     "fs": "^0.0.1-security",
+    "lodash": "^4.17.21",
     "next": "12.1.6",
     "next-auth": "^4.3.4",
     "nprogress": "^0.2.0",

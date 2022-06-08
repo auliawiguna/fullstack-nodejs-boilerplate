@@ -6,24 +6,7 @@ import AuthService from '@services/auth'
 import axios from 'axios'
 
 const Permission = (props) => {
-    const [records, setRecord] = useState([])
 
-    useEffect(() => {
-        const fetchData = async () => {
-            let userToken = AuthService.userValue
-            let apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/permissions`
-            axios.defaults.headers.common['Authorization'] = `Bearer ${userToken.token}`
-            let records = await axios.get(apiUrl, {
-            }).then((response) => {
-                return response.data.data.rows
-            }).catch((error) => {
-                return error.message
-            })    
-
-            setRecord(records)
-        }
-        fetchData()
-    }, [])
 
     const columns = useMemo(() => [
         {
@@ -40,7 +23,7 @@ const Permission = (props) => {
             ]
         }
     ])
-    let data = records
+    let data = []
     return (
         <>
             <Head>
@@ -48,7 +31,7 @@ const Permission = (props) => {
             </Head>
             <DashboardLayout title="Permission">
                 <div>
-                    <TableUI columns={columns} data={data}>
+                    <TableUI columns={columns} data={data} url={`${process.env.NEXT_PUBLIC_API_URL}/api/v1/permissions`}>
 
                     </TableUI>
                 </div>
