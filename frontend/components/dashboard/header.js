@@ -2,16 +2,43 @@ import NextLink from 'next/link';
 import { Button, IconButton, Flex, useColorModeValue, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import ThemeToggle from '../theme-toggle';
 import MobileNav from './mobile-nav';
+import axios from 'axios'
 import { MY_APP } from '@config/constants';
-import { FaHamburger, FaSignOutAlt, FaUserCog } from "react-icons/fa"
-import { AddIcon } from '@chakra-ui/icons'
+import { FaSignOutAlt, FaUserCog } from "react-icons/fa"
+import { useSession, signOut } from "next-auth/react"
+import Swal from 'sweetalert2'
 
-const logout = async () => {
-  alert('a')
-}
 
 export default function Header() {
+  const { data: session } = useSession()    
   const bgColor = useColorModeValue('white', 'gray.800');
+  const logout = async () => {
+    Swal.fire({
+      title: 'Sign Out',
+      text: "Terminate current session?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, sign me out!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // remove user from local storage, publish null to user subscribers and redirect to login page
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auths/sign-out`
+    
+        axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
+        return await axios.post(url).then((response) => {
+            if (response.data.data) {
+              signOut()    
+            } else {
+                return false
+            }
+        })
+      }
+    })
+  
+  }
+
 
   return (
     <Flex

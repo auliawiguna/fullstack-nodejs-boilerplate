@@ -42,19 +42,7 @@ const loginNextAuth = async (url, username, password) => {
 }
 
 
-const logout = async (url) => {
-    // remove user from local storage, publish null to user subscribers and redirect to login page
-    return await axios.post(url).then((response) => {
-        if (response.data.data) {
-            localStorage.removeItem('user')
-            Router.push('/login')
-            userSubject.next(null)
-
-            return true
-    } else {
-            return false
-        }
-    })
+const logout = async () => {
 }
 
 const validateToken = async (url, token) => {

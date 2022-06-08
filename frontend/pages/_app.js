@@ -1,6 +1,7 @@
 import '../styles/globals.css'
-import { ChakraProvider } from '@chakra-ui/react'
+import { Box, ChakraProvider } from '@chakra-ui/react'
 import { RouteGuard } from '@components/authguard'
+import { SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -64,5 +65,12 @@ function Auth({ children }) {
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
-  return <div>Loading...</div>
+  return (
+    <>
+      <Box padding='6' boxShadow='lg' bg='white' h='calc(100vh)'>
+        <SkeletonCircle size='10' />
+        <SkeletonText mt='4' noOfLines={14} spacing='4' />
+      </Box>    
+    </>
+  )
 }

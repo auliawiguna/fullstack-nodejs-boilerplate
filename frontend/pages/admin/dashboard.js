@@ -3,6 +3,8 @@ import Head from 'next/head'
 import { useSession, signIn, signOut } from "next-auth/react"
 
 const DashboardIndex = () => {
+    const { data: session } = useSession()
+    console.log(session);
     return (
         <>
             <Head>
