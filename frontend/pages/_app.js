@@ -1,13 +1,13 @@
 import '../styles/globals.css'
-import AuthService from '@services/auth'
-import { Box, ChakraProvider, useColorModeValue, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { extendTheme } from "@chakra-ui/react"
 import { Fonts } from '@components/fonts'
-import { SessionProvider, signIn, useSession } from 'next-auth/react'
+import { SessionProvider } from 'next-auth/react'
 import Authenticated from '@middlewares/authenticated'
+import RedirectIfAuthenticated from '@middlewares/redirectIfAuthenticated'
 import React from 'react'
 
 const theme = extendTheme({
@@ -35,13 +35,19 @@ export default function MyApp({
     <ChakraProvider theme={theme}>
       <Fonts />
       <SessionProvider session={session}>
-        {Component.auth ? (
-          <Authenticated>
+        {
+          Component.auth ? (
+            <Authenticated>
+              <Component {...pageProps} />
+            </Authenticated>
+          ) : Component.redirectIfAuthenticated ? (
+            <RedirectIfAuthenticated>
+              <Component {...pageProps} />
+            </RedirectIfAuthenticated>
+          ) : (
             <Component {...pageProps} />
-          </Authenticated>
-        ) : (
-          <Component {...pageProps} />
-        )}
+          )          
+        }
       </SessionProvider>
     </ChakraProvider>
   )

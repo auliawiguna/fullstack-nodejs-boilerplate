@@ -171,6 +171,8 @@ const App = (props) => {
   );
 };
 
+App.redirectIfAuthenticated = true 
+
 export default App
 
 // export async function getStaticProps() {

@@ -1,7 +1,9 @@
-import { signIn, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { Box, useColorModeValue, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import AuthService from '@services/auth'
 import React from 'react'
+import { useRouter } from 'next/router'
+import { ROUTE } from '@config/constants'
 
 const checkToken = async (token) => {
     let apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auths/auth-validate`
@@ -10,10 +12,11 @@ const checkToken = async (token) => {
 }
   
 
-const Authenticated = ({ children }) => {
+const RedirectIfAuthenticated = ({ children }) => {
     const { data: session, status } = useSession()
     const isUser = !!session?.user
     const bgColor = useColorModeValue('white', 'gray.800')
+    const router = useRouter()
   
     React.useEffect(() => {
       if (status === "loading") {
@@ -22,8 +25,10 @@ const Authenticated = ({ children }) => {
   
       let isTokenValid = checkToken(session.accessToken)
   
-      if (!isUser || !isTokenValid) {
-        signIn()
+      if (isUser && isTokenValid) {
+        router.push({
+          pathname: ROUTE.DASHBOARD,
+        })
       }
     }, [isUser, status])
   
@@ -43,4 +48,4 @@ const Authenticated = ({ children }) => {
     )
 }
 
-export default Authenticated
+export default RedirectIfAuthenticated
