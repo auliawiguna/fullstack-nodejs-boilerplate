@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import { Box, ChakraProvider } from '@chakra-ui/react'
-import { RouteGuard } from '@components/authguard'
-import { SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+import AuthService from '@services/auth'
+import { useColorModeValue, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -47,14 +47,25 @@ export default function MyApp({
   )
 }
 
+const checkToken = async (token) => {
+  let apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auths/auth-validate`
+  let checkTokenAuth = await AuthService.validateToken(apiUrl, token)
+  return checkTokenAuth.token ? true : false
+}
+
 function Auth({ children }) {
   const { data: session, status } = useSession()
   const isUser = !!session?.user
+  const bgColor = useColorModeValue('white', 'gray.800')
+
   React.useEffect(() => {
     if (status === "loading") {
       return
     }
-    if (!isUser) {
+
+    let isTokenValid = checkToken(session.accessToken)
+
+    if (!isUser || !isTokenValid) {
       signIn()
     }
   }, [isUser, status])
@@ -67,7 +78,7 @@ function Auth({ children }) {
   // If no user, useEffect() will redirect.
   return (
     <>
-      <Box padding='6' boxShadow='lg' bg='white' h='calc(100vh)'>
+      <Box padding='6' boxShadow='lg' bg={bgColor} h='calc(100vh)'>
         <SkeletonCircle size='10' />
         <SkeletonText mt='4' noOfLines={14} spacing='4' />
       </Box>    
