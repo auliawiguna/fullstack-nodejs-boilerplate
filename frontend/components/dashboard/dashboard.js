@@ -24,10 +24,11 @@ export default function Dashboard({ children, title }) {
             h="calc(100vh - 4rem)"
             bg={bgColorGray}
           >
+            <Box px={0} py={4} w="full">
+              <Heading as="h3" size="lg">{title ?? ''}</Heading>
+            </Box>
+
             <Box boxShadow='xs' p='6' rounded='md' bg={bgColor}>
-              <Box px={0} py={4} w="full">
-                <Heading as="h3" size="lg">{title ?? ''}</Heading>
-              </Box>
 
               {children}
             </Box>

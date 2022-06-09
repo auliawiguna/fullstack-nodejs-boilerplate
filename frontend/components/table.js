@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React, { useMemo, useState, useEffect } from 'react'
 import { useTable, usePagination, useSortBy } from 'react-table'
-import { TriangleDownIcon, TriangleUpIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons'
-import { Button, ButtonGroup, Stack } from '@chakra-ui/react'
+import { TriangleDownIcon, TriangleUpIcon, DragHandleIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import { Button, IconButton, ButtonGroup, Stack } from '@chakra-ui/react'
 import _ from 'lodash'
 import {
     Table,
@@ -164,13 +164,17 @@ export default function TableUI({ columns, data, url, baseurl }) {
                                             })
                                         }
                                         <Td alignContent={'start'}>
-                                            <Menu>
-                                                <MenuButton size={'sm'} as={Button} rightIcon={<ChevronDownIcon />}>
-                                                    Actions
-                                                </MenuButton>
+                                            <Menu size={'sm'}>
+                                                <MenuButton
+                                                    as={IconButton}
+                                                    aria-label='Options'
+                                                    icon={<DragHandleIcon />}
+                                                    variant='outline'
+                                                />
                                                 <MenuList>
-                                                    <MenuItem size={'sm'}><Link href={ `${baseurl}/${row.original.id}/edit` }>Edit</Link></MenuItem>
-                                                    <MenuItem size={'sm'}>Delete</MenuItem>
+                                                    <MenuItem>
+                                                        <Link href={ `${baseurl}/${row.original.id}/edit` }>Edit</Link>
+                                                    </MenuItem>
                                                 </MenuList>
                                             </Menu>                                            
                                         </Td>
