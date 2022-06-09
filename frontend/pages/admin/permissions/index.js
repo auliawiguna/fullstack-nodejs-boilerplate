@@ -14,10 +14,6 @@ const Permission = (props) => {
                     Header: "Name",
                     accessor: 'name'
                 },
-                {
-                    Header: "Description",
-                    accessor: 'description'
-                },
             ]
         }
     ])
@@ -29,7 +25,7 @@ const Permission = (props) => {
             </Head>
             <DashboardLayout title="Permission">
                 <div>
-                    <TableUI columns={columns} data={data} url={`${process.env.NEXT_PUBLIC_API_URL}/api/v1/permissions`}>
+                    <TableUI baseurl={"/admin/permissions"} columns={columns} data={data} url={`${process.env.NEXT_PUBLIC_API_URL}/api/v1/permissions`}>
 
                     </TableUI>
                 </div>

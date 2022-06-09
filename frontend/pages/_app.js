@@ -9,6 +9,7 @@ import { SessionProvider } from 'next-auth/react'
 import Authenticated from '@middlewares/authenticated'
 import RedirectIfAuthenticated from '@middlewares/redirectIfAuthenticated'
 import React from 'react'
+import { StyleFunctionProps } from '@chakra-ui/theme-tools'
 
 const theme = extendTheme({
   fonts: {
@@ -20,6 +21,23 @@ const theme = extendTheme({
     md: "768px",
     lg: "960px",
     xl: "1200px",
+  },  
+  components: {
+    Button: {
+      // 2. We can add a new button size or extend existing
+      sizes: {
+        xl: {
+          h: '56px',
+          fontSize: 'lg',
+          px: '32px',
+        },
+        sm: {
+          h: '32px',
+          fontSize: 'sm',
+          px: '12px',
+        },
+      },
+    },
   },  
 })
 Router.events.on('routeChangeStart', () => NProgress.start())

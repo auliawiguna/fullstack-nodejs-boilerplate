@@ -1,25 +1,29 @@
 import Link from 'next/link'
 import React, { useMemo, useState, useEffect } from 'react'
 import { useTable, usePagination, useSortBy } from 'react-table'
-import { TriangleDownIcon, TriangleUpIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { TriangleDownIcon, TriangleUpIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { Button, ButtonGroup, Stack } from '@chakra-ui/react'
 import _ from 'lodash'
 import {
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
-    TableCaption,
     TableContainer,
     chakra
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import {
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+  } from '@chakra-ui/react'
 
-export default function TableUI({ columns, data, url }) {
+export default function TableUI({ columns, data, url, baseurl }) {
     const { data: session, status } = useSession()
     const isUser = !!session?.user
     const [records, setRecord] = useState([])
@@ -32,7 +36,7 @@ export default function TableUI({ columns, data, url }) {
         fetchData(session, 1, 10)
     }, [isUser, status])
 
-    const fetchData = async (session, page, per_page) => {
+    const fetchData = async (session, page, per_page ) => {
         if (!_.isNil(session)) {
             setPage(page)
             let apiUrl = url
@@ -64,7 +68,7 @@ export default function TableUI({ columns, data, url }) {
         const items = []
         if (totalPages>1) {
             if (page>1) {
-                items.push(<Button onClick={() => {fetchData(session, page-1, 10)}}  leftIcon={<ChevronLeftIcon />} colorScheme='facebook' variant='outline'>Previous Page</Button>)
+                items.push(<Button key={"previous_page"} onClick={() => {fetchData(session, page-1, 10)}}  leftIcon={<ChevronLeftIcon />} colorScheme='facebook' variant='outline'>Previous Page</Button>)
             }
             if (totalPages<=10) {
                 for (let index = 1; index <= totalPages; index++) {
@@ -94,7 +98,7 @@ export default function TableUI({ columns, data, url }) {
                 }
             }
             if (page<totalPages) {
-                items.push(<Button onClick={() => {fetchData(session, page+1, 10)}}  rightIcon={<ChevronRightIcon />} colorScheme='facebook' variant='outline'>Next Page</Button>)
+                items.push(<Button key={"next_page"} onClick={() => {fetchData(session, page+1, 10)}}  rightIcon={<ChevronRightIcon />} colorScheme='facebook' variant='outline'>Next Page</Button>)
             }
 
             return items
@@ -140,6 +144,7 @@ export default function TableUI({ columns, data, url }) {
                                         </chakra.span>                                        
                                     </Th>
                                 )) }
+                                <Th></Th>
                             </Tr>
                         )) }
                     </Thead>
@@ -158,6 +163,17 @@ export default function TableUI({ columns, data, url }) {
                                                 )
                                             })
                                         }
+                                        <Td alignContent={'start'}>
+                                            <Menu>
+                                                <MenuButton size={'sm'} as={Button} rightIcon={<ChevronDownIcon />}>
+                                                    Actions
+                                                </MenuButton>
+                                                <MenuList>
+                                                    <MenuItem size={'sm'}><Link href={ `${baseurl}/${row.original.id}/edit` }>Edit</Link></MenuItem>
+                                                    <MenuItem size={'sm'}>Delete</MenuItem>
+                                                </MenuList>
+                                            </Menu>                                            
+                                        </Td>
                                     </Tr>
                                 )
                             }) 
