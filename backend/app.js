@@ -20,6 +20,11 @@ const initFunction = async() => {
 }
 
 const app = express()
+
+app.use(function (req, res, next) {
+    res.removeHeader("X-Powered-By")
+    next()
+})
 app.use(express.json())
 app.use(cors())
 app.set('trust proxy', true)
