@@ -19,6 +19,10 @@ const Authenticated = ({ children }) => {
       if (status === "loading") {
         return
       }
+
+      if (!session) {
+        signIn()        
+      }
   
       let isTokenValid = checkToken(session.accessToken)
   

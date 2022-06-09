@@ -1,9 +1,7 @@
-import {Layout, DashboardLayout} from '@layouts/dashboard'
+import { DashboardLayout} from '@layouts/dashboard'
 import Head from 'next/head'
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import TableUI from '@components/table'
-import AuthService from '@services/auth'
-import axios from 'axios'
 
 const Permission = (props) => {
 

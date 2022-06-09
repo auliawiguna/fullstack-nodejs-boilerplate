@@ -23,16 +23,18 @@ const RedirectIfAuthenticated = ({ children }) => {
         return
       }
   
-      let isTokenValid = checkToken(session.accessToken)
+      if (session) {
+        let isTokenValid = checkToken(session.accessToken)
   
-      if (isUser && isTokenValid) {
-        router.push({
-          pathname: ROUTE.DASHBOARD,
-        })
+        if (isUser && isTokenValid) {
+          router.push({
+            pathname: ROUTE.DASHBOARD,
+          })
+        }          
       }
     }, [isUser, status])
   
-    if (isUser) {
+    if (status == "unauthenticated") {
       return children
     }
   
