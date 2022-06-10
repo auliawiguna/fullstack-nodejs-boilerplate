@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import React, { useMemo, useState, useEffect } from 'react'
-import { useTable, usePagination, useSortBy } from 'react-table'
-import { TriangleDownIcon, TriangleUpIcon, DragHandleIcon, ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from '@chakra-ui/icons'
-import { Button, IconButton, ButtonGroup, Stack } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { useTable, useSortBy } from 'react-table'
+import { TriangleDownIcon, TriangleUpIcon, EditIcon, DeleteIcon, ChevronLeftIcon, ChevronRightIcon, SearchIcon, PlusSquareIcon } from '@chakra-ui/icons'
+import { Button, ButtonGroup, Stack, Flex, InputGroup, Input, InputRightElement, Box } from '@chakra-ui/react'
 import _ from 'lodash'
 import {
     Table,
@@ -16,12 +16,6 @@ import {
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
-import {
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-  } from '@chakra-ui/react'
 
 export default function TableUI({ columns, data, url, baseurl }) {
     const { data: session, status } = useSession()
@@ -68,37 +62,37 @@ export default function TableUI({ columns, data, url, baseurl }) {
         const items = []
         if (totalPages>1) {
             if (page>1) {
-                items.push(<Button key={"previous_page"} onClick={() => {fetchData(session, page-1, 10)}}  leftIcon={<ChevronLeftIcon />} colorScheme='facebook' variant='outline'>Previous Page</Button>)
+                items.push(<Button size={'sm'} key={"previous_page"} onClick={() => {fetchData(session, page-1, 10)}}  leftIcon={<ChevronLeftIcon />} colorScheme='facebook' variant='outline'>Previous Page</Button>)
             }
             if (totalPages<=10) {
                 for (let index = 1; index <= totalPages; index++) {
-                    items.push(<Button key={index} onClick={() => {fetchData(session, index, 10)}} isActive={page==index} colorScheme='facebook' variant='outline'>{index}</Button>)
+                    items.push(<Button size={'sm'} key={index} onClick={() => {fetchData(session, index, 10)}} isActive={page==index} colorScheme='facebook' variant='outline'>{index}</Button>)
                 }
             } else {
                 if (page<=4) {
                     for (let index = 1; index <= 5; index++) {
-                        items.push(<Button key={index} onClick={() => {fetchData(session, index, 10)}} isActive={page==index} colorScheme='facebook' variant='outline'>{index}</Button>)
+                        items.push(<Button size={'sm'} key={index} onClick={() => {fetchData(session, index, 10)}} isActive={page==index} colorScheme='facebook' variant='outline'>{index}</Button>)
                     }                
-                    items.push(<Button key={'separator1'} colorScheme='facebook' variant='outline'>{'...'}</Button>)
-                    items.push(<Button key={totalPages} onClick={() => {fetchData(session, totalPages, 10)}} isActive={page==totalPages} colorScheme='facebook' variant='outline'>{totalPages}</Button>)
+                    items.push(<Button size={'sm'} key={'separator1'} colorScheme='facebook' variant='outline'>{'...'}</Button>)
+                    items.push(<Button size={'sm'} key={totalPages} onClick={() => {fetchData(session, totalPages, 10)}} isActive={page==totalPages} colorScheme='facebook' variant='outline'>{totalPages}</Button>)
                 } else if (page>4 && page<totalPages-4) {
-                    items.push(<Button key={1} onClick={() => {fetchData(session, 1, 10)}} isActive={page==1} colorScheme='facebook' variant='outline'>{'1'}</Button>)
-                    items.push(<Button key={'separator1'} colorScheme='facebook' variant='outline'>{'...'}</Button>)
-                    items.push(<Button mr={5} onClick={() => {fetchData(session, page-1, 10)}} colorScheme='facebook' variant='outline'>{page-1}</Button>)
-                    items.push(<Button mr={5} onClick={() => {fetchData(session, page, 10)}} isActive colorScheme='facebook' variant='outline'>{page}</Button>)
-                    items.push(<Button mr={5} onClick={() => {fetchData(session, page+1, 10)}} colorScheme='facebook' variant='outline'>{page+1}</Button>)
-                    items.push(<Button key={'separator2'} colorScheme='facebook' variant='outline'>{'...'}</Button>)
-                    items.push(<Button key={totalPages} onClick={() => {fetchData(session, totalPages, 10)}} isActive={page==totalPages} colorScheme='facebook' variant='outline'>{totalPages}</Button>)
+                    items.push(<Button size={'sm'} key={1} onClick={() => {fetchData(session, 1, 10)}} isActive={page==1} colorScheme='facebook' variant='outline'>{'1'}</Button>)
+                    items.push(<Button size={'sm'} key={'separator1'} colorScheme='facebook' variant='outline'>{'...'}</Button>)
+                    items.push(<Button size={'sm'} mr={5} onClick={() => {fetchData(session, page-1, 10)}} colorScheme='facebook' variant='outline'>{page-1}</Button>)
+                    items.push(<Button size={'sm'} mr={5} onClick={() => {fetchData(session, page, 10)}} isActive colorScheme='facebook' variant='outline'>{page}</Button>)
+                    items.push(<Button size={'sm'} mr={5} onClick={() => {fetchData(session, page+1, 10)}} colorScheme='facebook' variant='outline'>{page+1}</Button>)
+                    items.push(<Button size={'sm'} key={'separator2'} colorScheme='facebook' variant='outline'>{'...'}</Button>)
+                    items.push(<Button size={'sm'} key={totalPages} onClick={() => {fetchData(session, totalPages, 10)}} isActive={page==totalPages} colorScheme='facebook' variant='outline'>{totalPages}</Button>)
                 } else {
-                    items.push(<Button key={1} onClick={() => {fetchData(session, 1, 10)}} isActive={page==1} colorScheme='facebook' variant='outline'>{'1'}</Button>)
-                    items.push(<Button key={'separator2'} colorScheme='facebook' variant='outline'>{'...'}</Button>)
+                    items.push(<Button size={'sm'} key={1} onClick={() => {fetchData(session, 1, 10)}} isActive={page==1} colorScheme='facebook' variant='outline'>{'1'}</Button>)
+                    items.push(<Button size={'sm'} key={'separator2'} colorScheme='facebook' variant='outline'>{'...'}</Button>)
                     for (let index = totalPages-4; index <= totalPages; index++) {
-                        items.push(<Button key={index} onClick={() => {fetchData(session, index, 10)}} isActive={page==index} colorScheme='facebook' variant='outline'>{index}</Button>)
+                        items.push(<Button size={'sm'} key={index} onClick={() => {fetchData(session, index, 10)}} isActive={page==index} colorScheme='facebook' variant='outline'>{index}</Button>)
                     }
                 }
             }
             if (page<totalPages) {
-                items.push(<Button key={"next_page"} onClick={() => {fetchData(session, page+1, 10)}}  rightIcon={<ChevronRightIcon />} colorScheme='facebook' variant='outline'>Next Page</Button>)
+                items.push(<Button size={'sm'} key={"next_page"} onClick={() => {fetchData(session, page+1, 10)}}  rightIcon={<ChevronRightIcon />} colorScheme='facebook' variant='outline'>Next Page</Button>)
             }
 
             return items
@@ -126,12 +120,39 @@ export default function TableUI({ columns, data, url, baseurl }) {
     return (
         <>
             <TableContainer>
-                <Table colorScheme="gray" size="md" variant='simple' {...getTableProps()}>
+                <Flex mb={5}>
+                    <Box w={{sm:'100%', md:'50%', lg:'50%'}}>
+                        <InputGroup size='md' pl={1}>
+                            <Input
+                                colorScheme={'facebook'}
+                                variant={'outline'}
+                                focusBorderColor={'gray'}
+                                pr='4.5rem'
+                                type={'text'}
+                                placeholder='Search'
+                            />
+                            <InputRightElement width='6.5rem'>
+                                <Button size='sm' variant={'ghost'} outline={0} m="2" colorScheme='gray' leftIcon={<SearchIcon />}>
+                                    Search
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>         
+                    </Box>
+                    <Box w={{sm:'100%', md:'50%', lg:'50%'}}>
+                        <Link href={ `${baseurl}/create` }>
+                            <Button rightIcon={<PlusSquareIcon />} float='right' colorScheme='facebook' variant='outline'>
+                                Add New
+                            </Button>
+                        </Link>
+                    </Box>
+                </Flex>                
+
+                <Table border={'InactiveBorder'} colorScheme="gray" size="sm" fontSize={'md'} variant='striped' {...getTableProps()}>
                     <Thead>
                         { headerGroups.map((headerGroup) => (
-                            <Tr {...headerGroup.getHeaderGroupProps()}>
-                                { headerGroup.headers.map((column) => (
-                                    <Th {...column.getHeaderProps()}>
+                            <Tr key={headerGroup.key} {...headerGroup.getHeaderGroupProps()}>
+                                { headerGroup.headers.map((column, columnIndex) => (
+                                    <Th key={`header_column${columnIndex}`} {...column.getHeaderProps()}>
                                         { column.render('Header') }
                                         <chakra.span pl='4'>
                                             {column.isSorted ? (
@@ -150,21 +171,25 @@ export default function TableUI({ columns, data, url, baseurl }) {
                     </Thead>
                     <Tbody {...getTableBodyProps()}>
                         { 
-                            rows.map((row, i) => {
+                            rows.map((row, indexRow) => {
                                 prepareRow(row)
                                 return (
-                                    <Tr {...row.getRowProps()}>
+                                    <Tr key={`row${indexRow}`} {...row.getRowProps()}>
                                         {
-                                            row.cells.map((cell) => {
+                                            row.cells.map((cell, indexCell) => {
                                                 return (
-                                                    <Td {...cell.getCellProps()}>
+                                                    <Td key={`row${indexRow}_${indexCell}`} {...cell.getCellProps()}>
                                                         { cell.render('Cell') }
                                                     </Td>
                                                 )
                                             })
                                         }
                                         <Td alignContent={'start'}>
-                                            <Menu size={'sm'}>
+                                            <ButtonGroup variant='outline' float={'right'} spacing='2'>
+                                                <Link href={ `${baseurl}/${row.original.id}/edit` }><Button size={'sm'} colorScheme='blue' leftIcon={<EditIcon />}>Edit</Button></Link>
+                                                <Button size={'sm'} colorScheme='red' leftIcon={<DeleteIcon />}>Delete</Button>
+                                            </ButtonGroup>
+                                            {/* <Menu size={'sm'}>
                                                 <MenuButton
                                                     as={IconButton}
                                                     aria-label='Options'
@@ -176,7 +201,7 @@ export default function TableUI({ columns, data, url, baseurl }) {
                                                         <Link href={ `${baseurl}/${row.original.id}/edit` }>Edit</Link>
                                                     </MenuItem>
                                                 </MenuList>
-                                            </Menu>                                            
+                                            </Menu>                                             */}
                                         </Td>
                                     </Tr>
                                 )

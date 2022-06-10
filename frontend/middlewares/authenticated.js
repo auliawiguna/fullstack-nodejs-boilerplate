@@ -1,5 +1,5 @@
 import { signIn, useSession } from 'next-auth/react'
-import { Box, useColorModeValue, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+import { Box, useColorModeValue, SkeletonCircle, Skeleton, SkeletonText, Flex } from '@chakra-ui/react'
 import AuthService from '@services/auth'
 import React from 'react'
 
@@ -39,10 +39,20 @@ const Authenticated = ({ children }) => {
     // If no user, useEffect() will redirect.
     return (
       <>
-        <Box padding='6' boxShadow='lg' bg={bgColor} h='calc(100vh)'>
-          <SkeletonCircle size='10' />
-          <SkeletonText mt='4' noOfLines={14} spacing='4' />
-        </Box>    
+        <Flex w={'full'} mb={4}>
+          <Box w={'100%'} padding='6' boxShadow='lg' bg={bgColor} h='40px'>
+            <Skeleton h='40px' />
+          </Box>    
+        </Flex>
+        <Flex w={'full'}>
+          <Box w={'20%'} padding='6' boxShadow='lg' bg={bgColor} h='calc(100vh)'>
+            <Skeleton h='calc(100vh)' />
+          </Box>    
+          <Box w={'80%'} padding='6' boxShadow='lg' bg={bgColor} h='calc(100vh)'>
+            <SkeletonText mt='4' noOfLines={80} spacing='4' />
+          </Box>    
+
+        </Flex>
       </>
     )
 }

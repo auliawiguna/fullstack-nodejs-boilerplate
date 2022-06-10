@@ -110,7 +110,7 @@ function SidebarContainerMobile(props) {
   );
 }
 
-const SidebarDesktop = (props) => {
+export const SidebarDesktop = (props) => {
   const bgColor = useColorModeValue('white', 'gray.800');
 
   return (
@@ -152,7 +152,7 @@ const SidebarDesktop = (props) => {
   )
 }
 
-const SidebarMobile = (props) => {
+export const SidebarMobile = (props) => {
   const bgColor = useColorModeValue('white', 'gray.800');
 
   return (
@@ -192,9 +192,4 @@ const SidebarMobile = (props) => {
 
     </>
   )
-}
-
-export default {
-  SidebarDesktop,
-  SidebarMobile
 }

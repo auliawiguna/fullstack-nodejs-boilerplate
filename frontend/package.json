@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^2.8.10",
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
+    "formik": "^2.2.9",
     "framer-motion": "^6.3.3",
     "fs": "^0.0.1-security",
     "lodash": "^4.17.21",

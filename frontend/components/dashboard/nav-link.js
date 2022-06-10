@@ -18,7 +18,7 @@ const InternalLink = ({ children, ...props }) => {
   );
 };
 
-export const A = forwardRef(({ children, icon, ...props }, ref) => {
+const ABeforeForward = ({ children, icon, ...props }, ref) => {
   const color = useColorModeValue('gray.500', 'gray.300');
 
   return (
@@ -41,10 +41,10 @@ export const A = forwardRef(({ children, icon, ...props }, ref) => {
       {icon && cloneElement(icon, { mr: 3 })}
       <Box w="full">{children}</Box>
     </Flex>
-  );
-});
+  )
+}
 
-export const NavLink = forwardRef(({ href, ...props }, ref) => {
+const NavLinkBeforeForward = ({ href, ...props }, ref) => {
   const hoverColor = useColorModeValue('gray.900', 'white');
   const hoverBg = useColorModeValue('gray.100', 'gray.700');
   const activeColor = useColorModeValue('gray.600', 'teal.200');
@@ -69,5 +69,9 @@ export const NavLink = forwardRef(({ href, ...props }, ref) => {
         />
       )}
     </InternalLink>
-  );
-});
+  )
+}
+
+export const A = forwardRef(ABeforeForward)
+
+export const NavLink = forwardRef(NavLinkBeforeForward)

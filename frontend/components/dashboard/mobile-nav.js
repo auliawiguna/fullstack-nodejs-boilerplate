@@ -8,13 +8,11 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { Menu } from '../icons'
-import Sidebar from './sidebar';
+import { SidebarMobile } from './sidebar';
 
 export default function MobileNav() {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const btnRef = useRef()
-
-  const SidebarMobile = Sidebar.SidebarMobile
 
   return (
     <>

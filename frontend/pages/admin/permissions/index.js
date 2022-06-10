@@ -16,7 +16,7 @@ const Permission = (props) => {
                 },
             ]
         }
-    ])
+    ], [])
     let data = []
     return (
         <>
