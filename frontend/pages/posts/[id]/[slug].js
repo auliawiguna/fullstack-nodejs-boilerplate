@@ -15,7 +15,7 @@ const klik = () => {
 const Post = (props) => {
     useEffect(() => {
         console.log(props)
-    }, [])
+    }, [props])
 
     const notFoundPage = dynamic(() => import('./notFoundPage'))
     const router = useRouter()

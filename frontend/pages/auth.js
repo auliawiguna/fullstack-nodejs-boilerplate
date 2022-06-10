@@ -12,6 +12,7 @@ import {
   Link,
   Avatar,
   FormControl,
+  Text,
   FormHelperText,
   InputRightElement
 } from "@chakra-ui/react";
@@ -46,6 +47,8 @@ const App = (props) => {
 
   // get functions to build form with useForm() hook
   const { register, handleSubmit, setError, formState } = useForm(formOptions)
+
+  const { errors } = formState    
 
   const submitAxios = async ({username, password}) => {
     let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auths/sign-in`
@@ -119,18 +122,21 @@ const App = (props) => {
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
-                      children={<CFaUserAlt color="gray.300" />}
-                    />
+                    >
+                      <CFaUserAlt color="gray.300" />
+                    </InputLeftElement>
                     <Input type="email" name="username" {...register('username')} placeholder="email address" />
                   </InputGroup>
+                  <Text color={'red'} className="invalid-feedback">{errors.username?.message}</Text>
                 </FormControl>
                 <FormControl>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
                       color="gray.300"
-                      children={<CFaLock color="gray.300" />}
-                    />
+                    >
+                      <CFaLock color="gray.300" />
+                    </InputLeftElement>
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
@@ -146,6 +152,7 @@ const App = (props) => {
                   <FormHelperText textAlign="right">
                     <Link>forgot password?</Link>
                   </FormHelperText>
+                  <Text color={'red'} className="invalid-feedback">{errors.name?.password}</Text>
                 </FormControl>
                 <Button
                   borderRadius={0}
