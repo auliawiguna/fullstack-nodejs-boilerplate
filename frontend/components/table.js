@@ -167,8 +167,8 @@ export default function TableUI({ columns, data, url, baseurl }) {
                     </Box>
                     <Box w={{sm:'100%', md:'50%', lg:'50%'}}>
                         <Link href={ `${baseurl}/create` }>
-                            <Button rightIcon={<PlusSquareIcon />} float='right' colorScheme='facebook' variant='outline'>
-                                Add New
+                            <Button leftIcon={<PlusSquareIcon />} float='right' colorScheme='facebook' variant='outline'>
+                                Add New Record
                             </Button>
                         </Link>
                     </Box>

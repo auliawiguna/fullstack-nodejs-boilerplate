@@ -34,4 +34,6 @@ const Permission = (props) => {
     )
 }
 
+Permission.auth = true 
+
 export default Permission

@@ -4,14 +4,16 @@ import ThemeToggle from '../theme-toggle';
 import MobileNav from './mobile-nav';
 import axios from 'axios'
 import { MY_APP } from '@config/constants';
-import { FaSignOutAlt, FaUserCog } from "react-icons/fa"
+import { FaSignOutAlt, FaHome, FaUserCog } from "react-icons/fa"
 import { useSession, signOut } from "next-auth/react"
 import Swal from 'sweetalert2'
-
+import { useRouter } from 'next/router'
 
 export default function Header() {
   const { data: session } = useSession()    
   const bgColor = useColorModeValue('white', 'gray.800');
+  const router = useRouter()
+ 
   const logout = async () => {
     Swal.fire({
       title: 'Sign Out',
@@ -72,6 +74,9 @@ export default function Header() {
                 borderWidth={0}
               />
               <MenuList>
+                <MenuItem onClick={() => { router.push('/') }} icon={<FaHome />} command='⌘H'>
+                  Back to Portal
+                </MenuItem>
                 <MenuItem onClick={logout} icon={<FaSignOutAlt />} command='⌘Q'>
                   Sign Out
                 </MenuItem>
