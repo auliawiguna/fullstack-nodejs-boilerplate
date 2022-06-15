@@ -115,7 +115,7 @@ const CreatePage = () => {
                     <BreadcrumbItem isCurrentPage>
                         <Link  scroll={false} href='#'>Create Permissions</Link>
                     </BreadcrumbItem>
-                </Breadcrumb>                
+                </Breadcrumb>
                 <div>
                     <Box w={{sm: "full", md:'50%', lg:'50%' }}>
                         <form onSubmit={handleSubmit(submit)}>

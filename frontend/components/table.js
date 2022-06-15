@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import Swal from 'sweetalert2'
 
 export default function TableUI({ columns, data, url, baseurl }) {
     const { data: session, status } = useSession()
@@ -56,6 +57,32 @@ export default function TableUI({ columns, data, url, baseurl }) {
                 setTotalRecords(records.pages)                
             }
         }
+    }
+
+    const deleteData = (id) => {
+        Swal.fire({
+            title: 'Caution',
+            text: "Delete this record?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Proceed'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
+                let apiUrl = url
+                try {
+                    await axios.delete(`${apiUrl}/${id}`).then((response) => {
+                        if (!response.error) {
+                            fetchData(session, page, 10)                            
+                        }            
+                    })            
+                } catch (error) {
+                }                
+            }
+        })
+         
     }
 
     const PaginationPanel = () => {
@@ -187,21 +214,8 @@ export default function TableUI({ columns, data, url, baseurl }) {
                                         <Td alignContent={'start'}>
                                             <ButtonGroup variant='outline' float={'right'} spacing='2'>
                                                 <Link href={ `${baseurl}/${row.original.id}/edit` }><Button size={'sm'} colorScheme='blue' leftIcon={<EditIcon />}>Edit</Button></Link>
-                                                <Button size={'sm'} colorScheme='red' leftIcon={<DeleteIcon />}>Delete</Button>
+                                                <Button onClick={() => {deleteData(row.original.id)}} size={'sm'} colorScheme='red' leftIcon={<DeleteIcon />}>Delete</Button>
                                             </ButtonGroup>
-                                            {/* <Menu size={'sm'}>
-                                                <MenuButton
-                                                    as={IconButton}
-                                                    aria-label='Options'
-                                                    icon={<DragHandleIcon />}
-                                                    variant='outline'
-                                                />
-                                                <MenuList>
-                                                    <MenuItem>
-                                                        <Link href={ `${baseurl}/${row.original.id}/edit` }>Edit</Link>
-                                                    </MenuItem>
-                                                </MenuList>
-                                            </Menu>                                             */}
                                         </Td>
                                     </Tr>
                                 )
@@ -209,7 +223,7 @@ export default function TableUI({ columns, data, url, baseurl }) {
                         }
                     </Tbody>
                 </Table>
-                <Stack mb={16} spacing={2} direction="row" align='center'>
+                <Stack mb={16} mt={4} spacing={2} direction="row" align='center'>
                     <PaginationPanel />
                 </Stack>
             </TableContainer>
