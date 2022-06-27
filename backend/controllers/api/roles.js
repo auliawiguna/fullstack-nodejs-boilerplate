@@ -19,11 +19,7 @@
         let page = req.query.page ?? 1
         offset = limit * (page - 1);
 
-        const posts = await roleModel.findAndCountAll({
-            limit: parseInt(limit),
-            offset: parseInt(offset),
-            include : 'permissions'
-        })
+        const posts = await roleRepository.search(limit, offset, req.query.search)
 
         posts.pages = Math.ceil(posts.count / limit)
 
