@@ -19,11 +19,7 @@
         let page = req.query.page ?? 1
         offset = limit * (page - 1);
 
-        const posts = await permissionModel.findAndCountAll({
-            limit: parseInt(limit),
-            offset: parseInt(offset),
-            include : 'roles'
-        })
+        const posts = await permissionRepository.search(limit, offset, req.query.search)
         posts.pages = Math.ceil(posts.count / limit)
 
         return APIResponses.success(res, posts, 'Success')
