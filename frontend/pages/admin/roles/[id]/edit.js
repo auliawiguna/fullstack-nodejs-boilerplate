@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { FaSave, FaArrowLeft } from 'react-icons/fa'
+import { useEffect } from "react"
+
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -24,14 +26,14 @@ import {
 import * as Yup from 'yup'
 import { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { getSession } from 'next-auth/react'
+import { useSession, getSession } from 'next-auth/react'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
 import Swal from 'sweetalert2'
 
-const CreatePage = (props) => {
-    // const { data: session, status } = useSession()
-    const session = props.sessions
+const EditPage = (props) => {
+
+    let session = props.sessions
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -46,7 +48,7 @@ const CreatePage = (props) => {
     const formOptions = { resolver: yupResolver(validationSchema) }
 
     // get functions to build form with useForm() hook
-    const { register, handleSubmit, setError, formState } = useForm(formOptions)
+    const { register, handleSubmit, reset, setError, formState } = useForm(formOptions)
 
     const { errors } = formState    
     
@@ -59,30 +61,30 @@ const CreatePage = (props) => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Proceed'
-          }).then(async (result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                return router.push("/admin/permissions")
+                return router.push("/admin/roles")
             }
-          })
+        })
     }
 
     const submit = async (values) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
-        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/permissions`
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/roles/${props.id}`
         try {
             setIsLoading(true)            
-            await axios.post(url, values).then((response) => {
+            await axios.put(url, values).then((response) => {
                 if (!response.error) {
                     toast({
                         position: 'top-right',
                         title: 'Success.',
-                        description: "Record Created.",
+                        description: "Record Updated.",
                         status: 'success',
                         duration: 9000,
                         isClosable: true,
                     })                
                     setIsLoading(false)
-                    return router.push("/admin/permissions")
+                    return router.push("/admin/roles")
                 }            
             })            
         } catch (error) {
@@ -97,24 +99,31 @@ const CreatePage = (props) => {
             })                            
         }
     }
-    
+
+
+    useEffect(() => {
+        let defaultValues = {}
+        defaultValues.name = props.item.name ?? null
+        reset({ ...defaultValues })
+    }, [])
+
     return (
         <>
             <Head>
-                <title>Create Permission</title>
+                <title>Edit Role</title>
             </Head>
-            <DashboardLayout title="Create Permission">
+            <DashboardLayout title="Edit Role">
                 <Breadcrumb mb={4} fontWeight='medium' fontSize='sm'>
                     <BreadcrumbItem>
                         <Link scroll={false} href='/admin/dashboard'>Home</Link>
                     </BreadcrumbItem>
 
                     <BreadcrumbItem>
-                        <Link scroll={false} href='/admin/permissions'>Permissions</Link>
+                        <Link  scroll={false} href='/admin/roles'>Roles</Link>
                     </BreadcrumbItem>
 
                     <BreadcrumbItem isCurrentPage>
-                        <Link  scroll={false} href='#'>Create Permissions</Link>
+                        <Link  scroll={false} href='#'>Edit Roles</Link>
                     </BreadcrumbItem>
                 </Breadcrumb>
                 <div>
@@ -170,15 +179,27 @@ const CreatePage = (props) => {
     )
 }
 
-CreatePage.auth = true 
+EditPage.auth = true 
 
 export async function getServerSideProps(context) {
+    const { id } = context.params
     let session = await getSession(context)
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
+    let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/roles/${id}`
+    const item = await axios.get(url).then((response) => {
+        if (!response.error) {
+            return response.data.data
+        }
+    })            
+
     return {
         props: {
+            id: id,
             sessions: session,
+            item: item
         }
     }
 }
 
-export default CreatePage
+export default EditPage

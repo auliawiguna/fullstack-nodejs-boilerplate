@@ -61,14 +61,14 @@ const CreatePage = (props) => {
             confirmButtonText: 'Proceed'
           }).then(async (result) => {
             if (result.isConfirmed) {
-                return router.push("/admin/permissions")
+                return router.push("/admin/roles")
             }
           })
     }
 
     const submit = async (values) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
-        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/permissions`
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/roles`
         try {
             setIsLoading(true)            
             await axios.post(url, values).then((response) => {
@@ -82,7 +82,7 @@ const CreatePage = (props) => {
                         isClosable: true,
                     })                
                     setIsLoading(false)
-                    return router.push("/admin/permissions")
+                    return router.push("/admin/roles")
                 }            
             })            
         } catch (error) {
@@ -101,20 +101,20 @@ const CreatePage = (props) => {
     return (
         <>
             <Head>
-                <title>Create Permission</title>
+                <title>Create Role</title>
             </Head>
-            <DashboardLayout title="Create Permission">
+            <DashboardLayout title="Create Role">
                 <Breadcrumb mb={4} fontWeight='medium' fontSize='sm'>
                     <BreadcrumbItem>
                         <Link scroll={false} href='/admin/dashboard'>Home</Link>
                     </BreadcrumbItem>
 
                     <BreadcrumbItem>
-                        <Link scroll={false} href='/admin/permissions'>Permissions</Link>
+                        <Link scroll={false} href='/admin/roles'>Roles</Link>
                     </BreadcrumbItem>
 
                     <BreadcrumbItem isCurrentPage>
-                        <Link  scroll={false} href='#'>Create Permissions</Link>
+                        <Link  scroll={false} href='#'>Create Roles</Link>
                     </BreadcrumbItem>
                 </Breadcrumb>
                 <div>
