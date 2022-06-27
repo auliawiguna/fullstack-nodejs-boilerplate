@@ -26,6 +26,7 @@ export default function TableUI({ columns, data, url, baseurl }) {
     const [totalRecords, setTotalRecords] = useState(1)
     const [page, setPage] = useState(1)
     const [per_page, setPerPage] = useState(5)
+    const [search, setSearch] = useState('')
   
     React.useEffect(() => {
         fetchData(session, 1, 10)
@@ -39,7 +40,8 @@ export default function TableUI({ columns, data, url, baseurl }) {
             let records = await axios.get(apiUrl, {
                 params: {
                     page: page,
-                    per_page: per_page    
+                    per_page: per_page,
+                    search: search
                 }
             }).then((response) => {
                 return response.data.data
@@ -151,6 +153,12 @@ export default function TableUI({ columns, data, url, baseurl }) {
                     <Box w={{sm:'100%', md:'50%', lg:'50%'}}>
                         <InputGroup size='md' pl={1}>
                             <Input
+                                onChange={e => setSearch(e.target.value)}
+                                onKeyPress={(e) => {
+                                    if (e.key === "Enter") {
+                                        fetchData(session, page, 10)
+                                    }
+                                }}                                
                                 colorScheme={'facebook'}
                                 variant={'outline'}
                                 focusBorderColor={'gray'}
@@ -159,7 +167,7 @@ export default function TableUI({ columns, data, url, baseurl }) {
                                 placeholder='Search'
                             />
                             <InputRightElement width='6.5rem'>
-                                <Button size='sm' variant={'ghost'} outline={0} m="2" colorScheme='gray' leftIcon={<SearchIcon />}>
+                                <Button onClick={() => {fetchData(session, page, 10)}} size='sm' variant={'ghost'} outline={0} m="2" colorScheme='gray' leftIcon={<SearchIcon />}>
                                     Search
                                 </Button>
                             </InputRightElement>

@@ -32,7 +32,8 @@ import { useToast } from '@chakra-ui/react'
 import Swal from 'sweetalert2'
 
 const EditPage = (props) => {
-    const { data: session, status } = useSession()
+
+    let session = props.sessions
 
     const [isLoading, setIsLoading] = useState(false)
 
