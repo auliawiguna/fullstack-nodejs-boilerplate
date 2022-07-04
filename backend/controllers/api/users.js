@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 /**
  * User Controller
  */
@@ -24,6 +26,10 @@ export default class UserController {
             offset: parseInt(offset),
             include : 'roles'
         })
+        posts.rows.map((data) => {
+            data.dataValues.roles_name = _.join(data.dataValues.roles.map(({name}) => name), ', ')
+        })        
+        
         posts.pages = Math.ceil(posts.count / limit)        
 
         return APIResponses.success(res, posts, 'Success')

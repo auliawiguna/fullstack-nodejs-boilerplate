@@ -141,7 +141,7 @@ const validate = {
           last_name: Joi.string().required(),
           role_id: Joi.array().required().external(checkRole),
           email: Joi.string().required().email({ tlds: { allow: false } }).external(uniqueEmail),
-          password: Joi.string(),
+          password: Joi.string().allow(null, ''),
         }).strict()
     
         const payload = await schema.validateAsync(req.body)
