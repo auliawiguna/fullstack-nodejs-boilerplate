@@ -1,4 +1,4 @@
-import sendMailQueue from './../config/bull.js'
+import sendMailQueue from '#config/bull.js'
 import dotenv from 'dotenv'
 
 /**
