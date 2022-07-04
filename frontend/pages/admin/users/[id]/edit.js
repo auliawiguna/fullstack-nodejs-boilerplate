@@ -19,13 +19,13 @@ import {
     CheckboxGroup,
     Checkbox
 } from '@chakra-ui/react'
-import * as Yup from 'yup'
 import { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useSession, getSession } from 'next-auth/react'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
 import Swal from 'sweetalert2'
+import { edit } from '@validations/user'
 
 const EditPage = (props) => {
 
@@ -35,13 +35,7 @@ const EditPage = (props) => {
 
     const router = useRouter()
 
-    const validationSchema = Yup.object().shape({
-        first_name: Yup.string().required('First name is required'),
-        last_name: Yup.string().required('Last name is required'),
-        email: Yup.string().email().required('Email is required'),
-        role_id: Yup.array()
-        .min(1, 'Pick at least two items')
-    })
+    const validationSchema = edit
 
     const toast = useToast()
 

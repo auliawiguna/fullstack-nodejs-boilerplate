@@ -10,24 +10,18 @@ import {
     Box,
     Stack,
     FormControl,
-    FormErrorMessage,
-    InputGroup,
     Input,
     Button,
     FormLabel,
-    FormHelperText,
-    InputLeftElement,
-    Alert,
     Text,
-    AlertIcon
 } from '@chakra-ui/react'
-import * as Yup from 'yup'
 import { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getSession } from 'next-auth/react'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
 import Swal from 'sweetalert2'
+import { create } from '@validations/permission'
 
 const CreatePage = (props) => {
     // const { data: session, status } = useSession()
@@ -37,9 +31,7 @@ const CreatePage = (props) => {
 
     const router = useRouter()
 
-    const validationSchema = Yup.object().shape({
-        name: Yup.string().required('Name is required'),
-    })
+    const validationSchema = create
 
     const toast = useToast()
 

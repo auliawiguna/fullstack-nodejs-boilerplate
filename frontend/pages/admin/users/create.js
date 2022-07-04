@@ -17,13 +17,13 @@ import {
     CheckboxGroup,
     Checkbox
 } from '@chakra-ui/react'
-import * as Yup from 'yup'
 import { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getSession } from 'next-auth/react'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
 import Swal from 'sweetalert2'
+import { create } from '@validations/user'
 
 const CreatePage = (props) => {
     const session = props.sessions
@@ -32,14 +32,7 @@ const CreatePage = (props) => {
 
     const router = useRouter()
 
-    const validationSchema = Yup.object().shape({
-        first_name: Yup.string().required('First name is required'),
-        last_name: Yup.string().required('Last name is required'),
-        email: Yup.string().email().required('Email is required'),
-        password: Yup.string().required('Password is required'),
-        role_id: Yup.array()
-        .min(1, 'Pick at least two items')
-    })
+    const validationSchema = create
 
     const toast = useToast()
 

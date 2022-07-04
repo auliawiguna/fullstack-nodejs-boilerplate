@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { FaSave, FaArrowLeft } from 'react-icons/fa'
 import { useEffect } from "react"
+import { edit } from '@validations/role'
 
 import {
     Breadcrumb,
@@ -12,18 +13,11 @@ import {
     Box,
     Stack,
     FormControl,
-    FormErrorMessage,
-    InputGroup,
     Input,
     Button,
     FormLabel,
-    FormHelperText,
-    InputLeftElement,
-    Alert,
     Text,
-    AlertIcon
 } from '@chakra-ui/react'
-import * as Yup from 'yup'
 import { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useSession, getSession } from 'next-auth/react'
@@ -39,9 +33,7 @@ const EditPage = (props) => {
 
     const router = useRouter()
 
-    const validationSchema = Yup.object().shape({
-        name: Yup.string().required('Name is required'),
-    })
+    const validationSchema = edit
 
     const toast = useToast()
 

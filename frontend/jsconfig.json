@@ -2,6 +2,7 @@
     "compilerOptions": {
         "baseUrl": "./",
         "paths": {
+        "@validations/*": ["validations/*"],
         "@components/*": ["components/*"],
         "@middlewares/*": ["middlewares/*"],
         "@config/*": ["config/*"],
