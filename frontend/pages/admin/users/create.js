@@ -22,8 +22,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { getSession } from 'next-auth/react'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
-import Swal from 'sweetalert2'
 import { create } from '@validations/user'
+import { backDialog } from '@utils/swal'
 
 const CreatePage = (props) => {
     const session = props.sessions
@@ -43,21 +43,7 @@ const CreatePage = (props) => {
 
     const { errors } = formState    
     
-    const back = async () => {
-        Swal.fire({
-            title: 'Caution',
-            text: "Cancel changes and back to list page?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Proceed'
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-                return router.push("/admin/users")
-            }
-          })
-    }
+    const back = () => { return backDialog(router, "/admin/users") }
 
     const submit = async (values) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
@@ -159,7 +145,7 @@ const CreatePage = (props) => {
                                     <CheckboxGroup colorScheme='green'>
                                         <Stack spacing={[1, 5]} direction={['column', 'row']}>
                                             { props.roles.map((role) => (
-                                                <Checkbox {...register('role_id')}  value={ role.id.toString() }>{ role.name }</Checkbox>
+                                                <Checkbox {...register('role_id')} key={ role.id.toString() } value={ role.id.toString() }>{ role.name }</Checkbox>
                                             )) }
                                         </Stack>
                                     </CheckboxGroup>                                    

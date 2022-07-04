@@ -20,8 +20,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { getSession } from 'next-auth/react'
 import axios from 'axios'
 import { useToast } from '@chakra-ui/react'
-import Swal from 'sweetalert2'
 import { create } from '@validations/permission'
+import { backDialog } from '@utils/swal'
 
 const CreatePage = (props) => {
     // const { data: session, status } = useSession()
@@ -42,21 +42,7 @@ const CreatePage = (props) => {
 
     const { errors } = formState    
     
-    const back = async () => {
-        Swal.fire({
-            title: 'Caution',
-            text: "Cancel changes and back to list page?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Proceed'
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-                return router.push("/admin/permissions")
-            }
-          })
-    }
+    const back = () => { return backDialog(router, "/admin/permissions") }
 
     const submit = async (values) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
