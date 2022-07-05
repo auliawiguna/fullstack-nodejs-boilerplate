@@ -9,6 +9,7 @@ import verified from '#middlewares/verified.js'
 const RoleMatrix = new RoleMatrixController
 const router = express.Router()
 
+router.get('/', [morgan("combined")], Auth, verified, RoleMatrix.index)
 router.patch('/assign', [morgan("combined")], Auth, verified, canAccess('create-role-matrix'), validate.create, RoleMatrix.assign)
 router.patch('/delete', [morgan("combined")], Auth, verified, canAccess('create-role-matrix'), validate.create, RoleMatrix.delete)
 

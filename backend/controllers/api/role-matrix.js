@@ -3,6 +3,23 @@
  */
 export default class RoleMatrixController {
     /**
+     * Index all permission matrix
+     *
+     * @param   Request  req
+     * @param   Result  res
+     *
+     * @return  JSON
+     */
+     index = async (req, res) => {
+        let save = await permissionroleModel.findAll()
+        if (save) {
+            return APIResponses.success(res, save, 'Success')
+        } else {
+            return APIResponses.unprocessableEntity(res, 'Failed')
+        }
+    }
+
+    /**
      * Assign permission to a role
      *
      * @param   Request  req
