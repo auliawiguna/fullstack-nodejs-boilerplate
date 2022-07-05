@@ -1,5 +1,5 @@
 [![Shaka-JS.png](https://i.postimg.cc/VL24nyh2/Shaka-JS.png)](https://postimg.cc/Yhf1BPMx)
-# Shaka JS Starter Pack, a free NodeJS Fullstack Starter Pack / Boilerplate for everyone
+# Shaka JS Starter Pack
 
 A NodeJS Fullstact Starter Pack project consists of :
 
@@ -82,3 +82,9 @@ A NodeJS Fullstact Starter Pack project consists of :
 - [Frontend & Backend] Add feature to sign in/up using Social Medias
 - [Frontend & Backend] Dockerise them both, just to make sure that everything can runs well in your end
 - [Backend] Enable Swagger UI to test API
+
+## Screenshots
+
+[![Screenshot-from-2022-07-05-22-18-53.png](https://i.postimg.cc/pdFK89Hb/Screenshot-from-2022-07-05-22-18-53.png)](https://postimg.cc/f3M3QRyB)
+
+[![Screenshot-from-2022-07-05-22-05-24.png](https://i.postimg.cc/pL9jb9yh/Screenshot-from-2022-07-05-22-05-24.png)](https://postimg.cc/Wdvz01GT)

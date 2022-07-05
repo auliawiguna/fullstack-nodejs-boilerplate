@@ -3,16 +3,8 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Header from '@components/portal/header'
 import { getSession } from 'next-auth/react'
-import {
-  Flex,
-  List,
-  ListItem,
-  ListIcon,
-  OrderedList,
-  UnorderedList,
-  chakra,
-  Box,
-} from "@chakra-ui/react";
+import Hero from "@components/sections/Hero"
+// import LandingLayout from "@components/layouts/LandingLayout"
 
 const Home = (props) => {
 
@@ -26,11 +18,20 @@ const Home = (props) => {
 
       <main className={styles.main}>
 
-        <Header sessions={ props.sessions }></Header>
+      <Header sessions={ props.sessions }></Header>
 
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">{ process.env.NEXT_PUBLIC_APP_NAME }</a>
+          Welcome to Shaka JS Starter Pack
         </h1>
+
+        <Hero
+          title="Hello, this is sample Hero section"
+          subtitle="Shaka JS Starter Pack is a free NodeJS fullstack starter pack for everyone."
+          image="https://source.unsplash.com/collection/1118919/800x600"
+          ctaText="Create your account now"
+          ctaLink="/signup"
+        />        
+
 
         <p className={styles.description}>
           Get started by editing{' '}
