@@ -26,6 +26,24 @@ const login = async (url, username, password) => {
     })
 }
 
+const signup = async (url, email, first_name, last_name, password) => {
+    return await axios.post(url, {
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+        password: password,
+        device_name: "web"
+    }).then((response) => {
+        if (response.data.data.token) {
+            let authData = response.data.data
+            return authData
+        } else {
+            return false
+        }
+
+    })
+}
+
 const loginNextAuth = async (url, username, password) => {
     return await axios.post(url, {
         email: username,
