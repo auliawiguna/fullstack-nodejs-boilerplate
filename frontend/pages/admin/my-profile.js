@@ -102,7 +102,7 @@ const ProfilePage = (props) => {
     }, [])
 
     const ImageAvatar = () => {
-        if (props.profile.avatar.path) {
+        if (props.profile.avatar && props.profile.avatar.id) {
             return (<Image src={ `${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/stream-avatar/${props.profile.avatar.id}`}></Image>)            
         }
 

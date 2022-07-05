@@ -22,6 +22,8 @@ export default class ProfileController {
             if (body.password) {
                 body.password = hashingHelper.createHash(body.password)
                 passwordIsChanged = true
+            } else {
+                delete(body.password)
             }
 
             //If email is changed, send notification
