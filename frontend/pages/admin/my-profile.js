@@ -15,6 +15,7 @@ import {
     Input,
     Button,
     FormLabel,
+    Image,
     Text,
     useToast
 } from '@chakra-ui/react'
@@ -43,6 +44,22 @@ const ProfilePage = (props) => {
     const { errors } = formState    
     
     const back = () => { return backDialog(router, "/admin/users") }
+
+    const uploadFile = async (values) => {
+        var formData = new FormData()
+        formData.append("file", values.target.files[0])
+
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/change-avatar`
+
+        await axios.post(url, formData, {
+            headers: {
+                'Authorization':`Bearer ${session.accessToken}`,
+                'Content-Type': 'multipart/form-data'
+            }        
+        }).then(() => {
+            router.push('/admin/my-profile')
+        })
+    }
 
     const submit = async (values) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
@@ -84,6 +101,14 @@ const ProfilePage = (props) => {
         reset({ ...defaultValues })
     }, [])
 
+    const ImageAvatar = () => {
+        if (props.profile.avatar.path) {
+            return (<Image src={ `${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/stream-avatar/${props.profile.avatar.id}`}></Image>)            
+        }
+
+        return (<></>)
+    }
+
     return (
         <>
             <Head>
@@ -100,7 +125,19 @@ const ProfilePage = (props) => {
                     </BreadcrumbItem>
                 </Breadcrumb>
                 <div>
-                    <Box w={{sm: "full", md:'50%', lg:'50%' }}>
+                    <Box w={{sm: "full", md:'50%', lg:'50%' }}>                        
+                    <FormControl px={3} mb={3}>
+                        <ImageAvatar />
+                        <FormLabel htmlFor='avatar'></FormLabel>
+                        <Input
+                            id='avatar'
+                            type='file'
+                            accept='image/png, image/gif, image/jpeg'
+                            onChange={(e) => {
+                                uploadFile(e)
+                            }}
+                        />
+                    </FormControl>                        
                     <form onSubmit={handleSubmit(submit)}>
                             <Stack
                             spacing={4}
@@ -219,6 +256,10 @@ export async function getServerSideProps(context) {
             return returnedData
         }
     })           
+
+    console.log('====================================');
+    console.log(profile);
+    console.log('====================================');
     
     return {
         props: {

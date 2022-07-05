@@ -12,6 +12,10 @@ const uploadPath = join(path.dirname(__filename), '../uploads')
 
 let storage = multer.diskStorage({
   destination: async (req, file, cb) => {
+    if (!fs.existsSync(uploadPath)){
+      await fs.mkdirSync(uploadPath)  
+    }  
+
     let yearFolder = join(uploadPath, new Date().getFullYear().toString())
     if (!fs.existsSync(yearFolder)){
       await fs.mkdirSync(yearFolder)  
@@ -73,9 +77,13 @@ let removeExifMetadata = async (file) => {
   if (!file.path) {
     return
   }
-  const imageToBeCleaned = await fs.readFileSync(file.path)
-  let image = await exifremove.remove(imageToBeCleaned)
-  await fs.writeFileSync(file.path, image, 'binary')
+  let extension = file.path.split(".").pop().toLowerCase()
+  if (extension=='jpg' || extension=='jpeg') {
+
+    const imageToBeCleaned = await fs.readFileSync(file.path)
+    let image = await exifremove.remove(imageToBeCleaned)
+    await fs.writeFileSync(file.path, image, 'binary')
+  }
 }
 
 export default { uploadFile, removeExifMetadata }
