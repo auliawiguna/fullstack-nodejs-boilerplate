@@ -8,6 +8,15 @@ try {
     userSubject = new BehaviorSubject(false)        
 }
 
+/**
+ * Login action
+ *
+ * @param   {string}  url       Backend URL
+ * @param   {string}  username  Email
+ * @param   {string}  password  Password
+ *
+ * @return  {string}            mixed
+ */
 const login = async (url, username, password) => {
     return await axios.post(url, {
         email: username,
@@ -26,12 +35,45 @@ const login = async (url, username, password) => {
     })
 }
 
+/**
+ * Sign up action
+ *
+ * @param   {string}  url       Backend URL
+ * @param   {string}  email       Email
+ * @param   {string}  first_name  First name
+ * @param   {string}  last_name   Last name
+ * @param   {string}  password  Password
+ *
+ * @return  {string}              [return description]
+ */
 const signup = async (url, email, first_name, last_name, password) => {
     return await axios.post(url, {
         email: email,
         first_name: first_name,
         last_name: last_name,
         password: password,
+    }).then((response) => {
+        if (response.data.data.token) {
+            let authData = response.data.data
+            return authData
+        } else {
+            return false
+        }
+
+    })
+}
+
+/**
+ * Validate registration token
+ *
+ * @param   {string}  url       Backend URL
+ * @param   {string}  token
+ *
+ * @return  {mixed}
+ */
+const validateAccount = async (url, token) => {
+    return await axios.post(url, {
+        token: parseInt(token),
     }).then((response) => {
         if (response.data.data.token) {
             let authData = response.data.data
@@ -87,6 +129,7 @@ const AuthService = {
     loginNextAuth,
     logout,
     signup,
+    validateAccount,
     validateToken
 }
 

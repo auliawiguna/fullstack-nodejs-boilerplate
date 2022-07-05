@@ -12,3 +12,11 @@ export const signin = Yup.object().shape({
     username: Yup.string().required('Username is required'),
     password: Yup.string().required('Password is required')
 })
+
+export const verify = Yup.object().shape({
+    token: Yup.string()
+    .required('Token is required')
+    .matches(/^[0-9]+$/, "Must be only digits")
+    .min(6, 'Must be exactly 6 digits')
+    .max(6, 'Must be exactly 6 digits')
+})

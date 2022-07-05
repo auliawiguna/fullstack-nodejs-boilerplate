@@ -2,18 +2,20 @@ import { signIn, useSession } from 'next-auth/react'
 import { Box, useColorModeValue, SkeletonCircle, Skeleton, SkeletonText, Flex } from '@chakra-ui/react'
 import AuthService from '@services/auth'
 import React from 'react'
+import _ from 'lodash'
+import { useRouter } from 'next/router'
 
 const checkToken = async (token) => {
     let apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auths/auth-validate`
     let checkTokenAuth = await AuthService.validateToken(apiUrl, token)
-    return checkTokenAuth.token ? true : false
+    return checkTokenAuth
 }
-  
 
 const Authenticated = ({ children }) => {
     const { data: session, status } = useSession()
     const isUser = !!session?.user
     const bgColor = useColorModeValue('white', 'gray.800')
+    const router = useRouter()
   
     React.useEffect(() => {
       if (status === "loading") {
@@ -23,12 +25,27 @@ const Authenticated = ({ children }) => {
       if (!session) {
         signIn()        
       }
-  
-      let isTokenValid = checkToken(session.accessToken)
-  
-      if (!isUser || !isTokenValid) {
-        signIn()
+
+      const fetchData = async () => {
+        return await checkToken(session.accessToken)
       }
+
+      let isTokenValid = fetchData()
+      .then((result) => {
+        if (!isUser || !result.token) {
+          signIn()
+        }
+        if (isUser && _.isNil(result.user.validated_at)) {
+          router.push({
+            pathname: '/validate-account',
+          })
+        }
+      })
+      .catch()
+  
+  
+
+
     }, [isUser, status])
   
     if (isUser) {
