@@ -202,6 +202,15 @@ ProfilePage.auth = true
 export async function getServerSideProps(context) {
     let session = await getSession(context)
 
+    if (!session) {
+        return {
+            props: {
+                sessions: null,
+                profile: null,
+            }
+        }    
+    }
+
     axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
     let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/active-profile`
     const profile = await axios.get(url).then((response) => {
