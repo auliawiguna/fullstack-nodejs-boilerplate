@@ -13,6 +13,10 @@ export const signin = Yup.object().shape({
     password: Yup.string().required('Password is required')
 })
 
+export const forgot = Yup.object().shape({
+    email: Yup.string().email().required('Email is required'),
+})
+
 export const verify = Yup.object().shape({
     token: Yup.string()
     .required('Token is required')

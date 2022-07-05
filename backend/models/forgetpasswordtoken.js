@@ -93,6 +93,10 @@ ForgetPasswordToken.init({
     type: DataTypes.INTEGER,
     allowNull: false,
   },  
+  token: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },  
   email: {
     type: DataTypes.STRING,
     allowNull: false,

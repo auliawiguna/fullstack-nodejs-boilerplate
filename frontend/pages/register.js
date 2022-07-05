@@ -125,7 +125,7 @@ const App = (props) => {
           <Box minW={{ base: "90%", md: "468px" }}>
             <Alert status='info' mb={4}>
               <AlertIcon />
-              Please complete the registration first, consider to use valid email address.
+              Please complete the registration first,<br/>consider to use valid email address.
             </Alert>            
 
             <form onSubmit={handleSubmit(submit)}>

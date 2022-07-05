@@ -9,12 +9,11 @@ import {
   InputLeftElement,
   chakra,
   Box,
-  Link,
+  Alert,
+  AlertIcon,
   Avatar,
   FormControl,
   Text,
-  FormHelperText,
-  InputRightElement
 } from "@chakra-ui/react";
 import NextLink from 'next/link'
 import { FaUserAlt, FaLock } from "react-icons/fa";
@@ -22,9 +21,8 @@ import AuthService from '@services/auth'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/router'
-import { signin } from '@validations/auth'
+import { forgot } from '@validations/auth'
 import Swal from 'sweetalert2'
-import { ROUTE } from '@config/constants'
 import Head from 'next/head'
 import { signIn, getCsrfToken } from 'next-auth/react'
 
@@ -35,22 +33,20 @@ const App = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
 
-  const handleShowClick = () => setShowPassword(!showPassword);
-
   const router = useRouter()
 
-  const formOptions = { resolver: yupResolver(signin) }
+  const formOptions = { resolver: yupResolver(forgot) }
 
   // get functions to build form with useForm() hook
   const { register, handleSubmit, setError, formState } = useForm(formOptions)
 
   const { errors } = formState    
 
-  const submitAxios = async ({username, password}) => {
-    let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auths/sign-in`
-    return await AuthService.login(url, username, password).
-    then(() => {
-      router.push(router.query.returnUrl || ROUTE.DASHBOARD)
+  const submit = async ({email}) => {
+    let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auths/forgot-password`
+    return await AuthService.resetPassword(url, email).
+    then(result => {
+      router.push(`/reset-password/${result.token}`)
     })
     .catch(error => {
       Swal.fire({
@@ -62,33 +58,10 @@ const App = (props) => {
     })
   }
 
-  const submit = async ({username, password}) => {
-    const res = await signIn('credentials', {
-      redirect: false,
-      username: username,
-      password: password,
-      callbackUrl:router.query.returnUrl || ROUTE.DASHBOARD
-    })
-    if (res?.error) {
-      Swal.fire({
-        title: 'Error!',
-        text: res.error,
-        icon: 'error',
-        confirmButtonText: 'Close'
-      })      
-      setErrorMessage(res.error)
-    } else {
-      setErrorMessage(false)
-    }
-    if (res.url) {
-      router.push(res.url)
-    }
-  }
-
   return (
     <>
       <Head>
-        <title>Sign In</title>
+        <title>Reset Password</title>
       </Head>    
       <Flex
         flexDirection="column"
@@ -106,9 +79,20 @@ const App = (props) => {
         >
           <Avatar bg="facebook.500" />
           <Heading color="facebook.500">
-            Welcome
+            Reset Password
           </Heading>
           <Box minW={{ base: "90%", md: "468px" }}>
+            <Alert status='info' mb={4}>
+              <AlertIcon />
+              Lost your password?
+              <br />
+              No worries, insert your email address
+              <br />
+              and we'll send a token for you to reset
+              <br />
+              your password.
+            </Alert>            
+            
             <form onSubmit={handleSubmit(submit)}>
               <Stack
                 spacing={4}
@@ -123,34 +107,9 @@ const App = (props) => {
                     >
                       <CFaUserAlt color="gray.300" />
                     </InputLeftElement>
-                    <Input type="email" name="username" {...register('username')} placeholder="Registered Email Address" />
+                    <Input type="email" name="email" {...register('email')} placeholder="Registered Email Address" />
                   </InputGroup>
                   <Text color={'red'} className="invalid-feedback">{errors.username?.message}</Text>
-                </FormControl>
-                <FormControl>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      color="gray.300"
-                    >
-                      <CFaLock color="gray.300" />
-                    </InputLeftElement>
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Password"
-                      name="password"
-                      {...register('password')}
-                    />
-                    <InputRightElement width="4.5rem">
-                      <Button h="1.75rem" size="sm" onClick={handleShowClick}>
-                        {showPassword ? "Hide" : "Show"}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                  <FormHelperText textAlign="right">
-                    <NextLink href={ '/forgot-password' }>forgot password?</NextLink>
-                  </FormHelperText>
-                  <Text color={'red'} className="invalid-feedback">{errors.name?.password}</Text>
                 </FormControl>
                 <Button
                   borderRadius={0}
@@ -159,7 +118,7 @@ const App = (props) => {
                   colorScheme="facebook"
                   width="full"
                 >
-                  Sign In
+                  Send Reset Password Token
                 </Button>
               </Stack>
             </form>

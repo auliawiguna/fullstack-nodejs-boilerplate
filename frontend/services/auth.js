@@ -85,6 +85,19 @@ const validateAccount = async (url, token) => {
     })
 }
 
+const resetPassword =  async (url, email) => {
+    return await axios.post(url, {
+        email: email,
+    }).then((response) => {
+        if (response.data.data.token) {
+            let authData = response.data.data
+            return authData
+        } else {
+            return false
+        }
+    })
+}
+
 const loginNextAuth = async (url, username, password) => {
     return await axios.post(url, {
         email: username,
@@ -130,7 +143,8 @@ const AuthService = {
     logout,
     signup,
     validateAccount,
-    validateToken
+    validateToken,
+    resetPassword
 }
 
 export default AuthService
