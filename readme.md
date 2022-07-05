@@ -1,5 +1,5 @@
 [![Shaka-JS.png](https://i.postimg.cc/VL24nyh2/Shaka-JS.png)](https://postimg.cc/Yhf1BPMx)
-# Shaka JS Starter Pack
+# Shaka JS Starter Pack, a free NodeJS Fullstack Starter Pack / Boilerplate for everyone
 
 A NodeJS Fullstact Starter Pack project consists of :
 
