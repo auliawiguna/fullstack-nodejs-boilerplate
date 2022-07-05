@@ -204,6 +204,14 @@ export default class AuthController {
         }        
     }
 
+    /**
+     * Validate token in every request
+     *
+     * @param   Request  req
+     * @param   Response  res
+     *
+     * @return  {mixed}
+     */
     validateAuth = async (req, res) => {
         let { token } = req.body
         try {
@@ -229,7 +237,15 @@ export default class AuthController {
         }
     }
 
-    forgotPassword = async (req, res) => {
+    /**
+     * Send token to reset password
+     *
+     * @param   Request  req
+     * @param   Response  res
+     *
+     * @return  {mixed}
+     */
+     forgotPassword = async (req, res) => {
         let { email } = req.body
         try {
             let user = await userModel.findOne({
@@ -263,4 +279,52 @@ export default class AuthController {
             return APIResponses.serverError(res, error.message)
         }        
     }    
+
+    /**
+     * Handle reset password
+     *
+     * @param   Request  req
+     * @param   Response  res
+     *
+     * @return  {mixed}
+     */
+     resetPassword = async (req, res) => {
+        let { token, email, password } = req.body
+        try {
+            token = token.toString()
+            // userModel.associate()
+            let user = await forgetpasswordtokenModel.findOne({
+                where: {
+                    token: hashingHelper.createSha256Hash(token),
+                    email: email
+                }
+            })
+
+            if (user === null) {
+                return APIResponses.unprocessableEntity(res, "Token does not exists")
+            } else {
+                if (user.expired_at < Math.floor(new Date().getTime() / 1000) ) {
+                    return APIResponses.unprocessableEntity(res, "Token is expired")                    
+                }
+
+                await forgetpasswordtokenModel.destroy({
+                    where: {
+                        email: email
+                    }
+                })   
+                
+                const updatedUser = await userModel.update({
+                    password: hashingHelper.createHash(password)
+                }, {
+                    where: {
+                        email: email
+                    }
+                })
+                    
+                return APIResponses.success(res, updatedUser, 'Success')
+            }
+        } catch (error) {
+            return APIResponses.serverError(res, error.message)
+        }        
+    }
 }

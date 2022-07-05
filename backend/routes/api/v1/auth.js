@@ -15,6 +15,6 @@ router.post('/sign-in', [morgan("combined")], validateSignIn.create, AuthControl
 router.post('/validate', [morgan("combined")], validateUser.validateToken, AuthController.validate)
 router.get('/change-email/:token', [morgan("combined")], AuthController.finaliseEmailChange)
 router.post('/forgot-password', [morgan("combined")], validateUser.validateForgetPassword, AuthController.forgotPassword)
-router.post('/change-password', [morgan("combined")], AuthController.validate)
+router.post('/reset-password', [morgan("combined")], validateUser.resetPassword, AuthController.resetPassword)
 
 export default router

@@ -124,6 +124,21 @@ const validate = {
   
       next()
     },
+    resetPassword: async (req, res, next) => {
+      const schema = Joi.object({
+        email: Joi.string().required().email({ tlds: { allow: false } }),
+        token: Joi.number().integer().required(),
+        password: Joi.string().required(),
+      }).strict()
+  
+      const payload = schema.validate(req.body)
+  
+      if (payload.error) {
+        return APIResponses.unprocessableEntity(res, payload.error.message)
+      }
+  
+      next()
+    },
     update: async (req, res, next) => {
       try {
         const uniqueEmail = async (email) => {
