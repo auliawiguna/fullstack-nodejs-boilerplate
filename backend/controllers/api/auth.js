@@ -218,6 +218,7 @@ export default class AuthController {
                     user: {
                         name: user.name,
                         id: user.id,
+                        validated_at: user.validated_at,
                         email: user.email,
                         roles: user.roles ?? []
                     },
