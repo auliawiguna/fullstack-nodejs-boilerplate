@@ -17,13 +17,13 @@ import {
     FormLabel,
     Text,
     CheckboxGroup,
-    Checkbox
+    Checkbox,
+    useToast
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useSession, getSession } from 'next-auth/react'
 import axios from 'axios'
-import { useToast } from '@chakra-ui/react'
 import { edit } from '@validations/user'
 import { backDialog } from '@utils/swal'
 

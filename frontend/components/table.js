@@ -2,7 +2,6 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { useTable, useSortBy } from 'react-table'
 import { TriangleDownIcon, TriangleUpIcon, EditIcon, DeleteIcon, ChevronLeftIcon, ChevronRightIcon, SearchIcon, PlusSquareIcon } from '@chakra-ui/icons'
-import { Button, ButtonGroup, Stack, Flex, InputGroup, Input, InputRightElement, Box } from '@chakra-ui/react'
 import _ from 'lodash'
 import {
     Table,
@@ -12,7 +11,15 @@ import {
     Th,
     Td,
     TableContainer,
-    chakra
+    chakra,
+    Button, 
+    ButtonGroup, 
+    Stack, 
+    Flex, 
+    InputGroup, 
+    Input, 
+    InputRightElement, 
+    Box
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'

@@ -1,6 +1,5 @@
 import {Layout, DashboardLayout} from '@layouts/dashboard'
 import Head from 'next/head'
-import { useSession, signIn, signOut } from "next-auth/react"
 
 const DashboardIndex = () => {
     return (
