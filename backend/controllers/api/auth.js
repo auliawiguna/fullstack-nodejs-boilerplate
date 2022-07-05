@@ -260,22 +260,24 @@ export default class AuthController {
                 let tokenPassword = stringHelper.randomNumber().toString()
 
                 let hashedPassword = hashingHelper.createSha256Hash(tokenPassword)
+
+                let updatedData = {
+                    token: hashedPassword,
+                    email: email,
+                    user_id: user.id,
+                    expired_at: Math.floor(Date.now() / 1000) + 3600
+                }
         
                 let token = await forgetpasswordtokenModel.updateOrCreate({
                     where: {
                         user_id: user.id
                     }
-                }, {
-                    token: hashedPassword,
-                    email: email,
-                    user_id: user.id,
-                    expired_at: Math.floor(Date.now() / 1000) + 3600
-                }) 
+                }, updatedData) 
 
                 // //Send mail
                 await notificationsHelper.forgotPassword(email, tokenPassword, user.first_name)
                 
-                return APIResponses.success(res, token.dataValues, 'Success')
+                return APIResponses.success(res, updatedData, 'Success')
             }
         } catch (error) {
             return APIResponses.serverError(res, error.message)
@@ -329,4 +331,35 @@ export default class AuthController {
             return APIResponses.serverError(res, error.message)
         }        
     }
+
+    /**
+     * Get reset password token
+     *
+     * @param   Request  req
+     * @param   Response  res
+     *
+     * @return  {mixed}
+     */    
+    getResetPassword = async (req, res) => {
+        try {
+            dotenv.config()
+
+            let { token } = req.params
+
+            const validateToken = await forgetpasswordtokenModel.findOne({
+                where: {
+                    token: token
+                }
+            })
+
+            if (validateToken==null) {
+                return APIResponses.notFound(res, 'Not Found Exception')
+            } else {
+                return APIResponses.success(res, validateToken, 'Success')
+            }
+
+        } catch (error) {
+            return APIResponses.serverError(res, error.message)
+        }             
+    }    
 }

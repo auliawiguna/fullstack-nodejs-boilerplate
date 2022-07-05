@@ -17,6 +17,17 @@ export const forgot = Yup.object().shape({
     email: Yup.string().email().required('Email is required'),
 })
 
+export const resetRequest = Yup.object().shape({
+    email: Yup.string().email().required('Email is required'),
+    password: Yup.string().min(8).required('Password is required'),
+    password_confirmation: Yup.string().min(8).oneOf([Yup.ref('password'), null], 'Passwords must match'),
+    token: Yup.string()
+    .required('Token is required')
+    .matches(/^[0-9]+$/, "Must be only digits")
+    .min(6, 'Must be exactly 6 digits')
+    .max(6, 'Must be exactly 6 digits')
+})
+
 export const verify = Yup.object().shape({
     token: Yup.string()
     .required('Token is required')

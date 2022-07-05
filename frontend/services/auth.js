@@ -85,9 +85,42 @@ const validateAccount = async (url, token) => {
     })
 }
 
+/**
+ * Send reset password request
+ *
+ * @param   {string}  url       Backend URL
+ * @param   {string}  email
+ *
+ * @return  {mixed}
+ */
 const resetPassword =  async (url, email) => {
     return await axios.post(url, {
         email: email,
+    }).then((response) => {
+        if (response.data.data.token) {
+            let authData = response.data.data
+            return authData
+        } else {
+            return false
+        }
+    })
+}
+
+/**
+ * Handle finalise reset password
+ *
+ * @param   {string}  url       Backend URL
+ * @param   {string}  token     6 digits token
+ * @param   {string}  email     Email address
+ * @param   {string}  password  New password
+ *
+ * @return  {mixed}
+ */
+const postResetPassword =  async (url, token, email, password) => {
+    return await axios.post(url, {
+        email: email,
+        password: password,
+        token: parseInt(token),
     }).then((response) => {
         if (response.data.data.token) {
             let authData = response.data.data
@@ -144,7 +177,8 @@ const AuthService = {
     signup,
     validateAccount,
     validateToken,
-    resetPassword
+    resetPassword,
+    postResetPassword
 }
 
 export default AuthService
