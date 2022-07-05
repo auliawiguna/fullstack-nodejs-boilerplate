@@ -32,7 +32,6 @@ const signup = async (url, email, first_name, last_name, password) => {
         first_name: first_name,
         last_name: last_name,
         password: password,
-        device_name: "web"
     }).then((response) => {
         if (response.data.data.token) {
             let authData = response.data.data
@@ -87,6 +86,7 @@ const AuthService = {
     login,
     loginNextAuth,
     logout,
+    signup,
     validateToken
 }
 

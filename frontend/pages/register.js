@@ -15,7 +15,7 @@ import {
   FormControl,
   Text,
   InputRightElement
-} from "@chakra-ui/react";
+} from "@chakra-ui/react"
 import NextLink from 'next/link'
 import { FaUserAlt, FaLock, FaEdit } from "react-icons/fa";
 import AuthService from '@services/auth'
@@ -65,9 +65,28 @@ const App = (props) => {
 
   const submit = async ({email, first_name, last_name, password}) => {
     let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auths/sign-up`
-    return await AuthService.login(url, email, first_name, last_name, password).
-    then(() => {
-      router.push(router.query.returnUrl || ROUTE.DASHBOARD)
+    return await AuthService.signup(url, email, first_name, last_name, password).
+    then(async () => {
+      const res = await signIn('credentials', {
+        redirect: false,
+        username: email,
+        password: password,
+        callbackUrl:router.query.returnUrl || ROUTE.DASHBOARD
+      })
+      if (res?.error) {
+        Swal.fire({
+          title: 'Error!',
+          text: res.error,
+          icon: 'error',
+          confirmButtonText: 'Close'
+        })      
+        setErrorMessage(res.error)
+      } else {
+        setErrorMessage(false)
+      }
+      if (res.url) {
+        router.push(res.url)
+      }
     })
     .catch(error => {
       Swal.fire({
@@ -172,7 +191,7 @@ const App = (props) => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                  <Text color={'red'} className="invalid-feedback">{errors.name?.password}</Text>
+                  <Text color={'red'} className="invalid-feedback">{errors.password?.message}</Text>
                 </FormControl>
 
                 <FormControl>
@@ -190,7 +209,7 @@ const App = (props) => {
                       {...register('password_confirmation')}
                     />
                   </InputGroup>
-                  <Text color={'red'} className="invalid-feedback">{errors.name?.password_confirmation}</Text>
+                  <Text color={'red'} className="invalid-feedback">{errors.password_confirmation?.message}</Text>
                 </FormControl>
                 
                 <Button
