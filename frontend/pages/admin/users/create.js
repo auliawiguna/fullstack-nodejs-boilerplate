@@ -110,7 +110,7 @@ const CreatePage = (props) => {
                                         type='text'
                                         {...register('first_name')}
                                     />
-                                    <Text color={'red'} className="invalid-feedback">{errors.name?.message}</Text>
+                                    <Text color={'red'} className="invalid-feedback">{errors.first_name?.message}</Text>
                                 </FormControl>
                                 <FormControl isRequired>
                                     <FormLabel htmlFor='last_name'>Last Name</FormLabel>
@@ -119,7 +119,7 @@ const CreatePage = (props) => {
                                         type='text'
                                         {...register('last_name')}
                                     />
-                                    <Text color={'red'} className="invalid-feedback">{errors.name?.message}</Text>
+                                    <Text color={'red'} className="invalid-feedback">{errors.last_name?.message}</Text>
                                 </FormControl>
                                 <FormControl isRequired>
                                     <FormLabel htmlFor='email'>Email</FormLabel>
@@ -128,7 +128,7 @@ const CreatePage = (props) => {
                                         type='email'
                                         {...register('email')}
                                     />
-                                    <Text color={'red'} className="invalid-feedback">{errors.name?.message}</Text>
+                                    <Text color={'red'} className="invalid-feedback">{errors.email?.message}</Text>
                                 </FormControl>
                                 <FormControl isRequired>
                                     <FormLabel htmlFor='password'>Password</FormLabel>
@@ -137,7 +137,7 @@ const CreatePage = (props) => {
                                         type='password'
                                         {...register('password')}
                                     />
-                                    <Text color={'red'} className="invalid-feedback">{errors.name?.message}</Text>
+                                    <Text color={'red'} className="invalid-feedback">{errors.password?.message}</Text>
                                 </FormControl>
                                 
                                 <FormControl>
@@ -149,7 +149,7 @@ const CreatePage = (props) => {
                                             )) }
                                         </Stack>
                                     </CheckboxGroup>                                    
-                                    <Text color={'red'} className="invalid-feedback">{errors.name?.message}</Text>
+                                    <Text color={'red'} className="invalid-feedback">{errors.role_id?.message}</Text>
                                 </FormControl>
 
 

@@ -140,4 +140,20 @@ export default class ProfileController {
             return APIResponses.serverError(res, error.message)
         }
     }
+
+    /**
+     * Get active profiles
+     *
+     * @param   Request  req
+     * @param   Response  res
+     *
+     * @return  userModel
+     */
+     activeProfile = async (req, res) => {
+        try {
+            return APIResponses.success(res, req.userData, 'Success')
+        } catch (error) {
+            return APIResponses.serverError(res, error.message)
+        }
+    }    
 }

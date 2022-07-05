@@ -4,7 +4,7 @@ import ThemeToggle from '../theme-toggle';
 import MobileNav from './mobile-nav';
 import axios from 'axios'
 import { MY_APP } from '@config/constants';
-import { FaSignOutAlt, FaHome, FaUserCog } from "react-icons/fa"
+import { FaSignOutAlt, FaHome, FaUserCog, FaUserAstronaut } from "react-icons/fa"
 import { useSession, signOut } from "next-auth/react"
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
@@ -74,6 +74,9 @@ export default function Header() {
                 borderWidth={0}
               />
               <MenuList>
+                <MenuItem onClick={() => { router.push('/admin/my-profile') }} icon={<FaUserAstronaut />} command='⌘I'>
+                  My Profile
+                </MenuItem>
                 <MenuItem onClick={() => { router.push('/') }} icon={<FaHome />} command='⌘H'>
                   Back to Portal
                 </MenuItem>

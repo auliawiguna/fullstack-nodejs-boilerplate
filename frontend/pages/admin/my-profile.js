@@ -16,18 +16,16 @@ import {
     Button,
     FormLabel,
     Text,
-    CheckboxGroup,
-    Checkbox,
     useToast
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useSession, getSession } from 'next-auth/react'
 import axios from 'axios'
-import { edit } from '@validations/user'
+import { profile } from '@validations/user'
 import { backDialog } from '@utils/swal'
 
-const EditPage = (props) => {
+const ProfilePage = (props) => {
 
     let session = props.sessions
 
@@ -35,11 +33,9 @@ const EditPage = (props) => {
 
     const router = useRouter()
 
-    const validationSchema = edit
-
     const toast = useToast()
 
-    const formOptions = { resolver: yupResolver(validationSchema) }
+    const formOptions = { resolver: yupResolver(profile) }
 
     // get functions to build form with useForm() hook
     const { register, handleSubmit, reset, setError, formState } = useForm(formOptions)
@@ -50,7 +46,7 @@ const EditPage = (props) => {
 
     const submit = async (values) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
-        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${props.id}`
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/update`
         try {
             setIsLoading(true)            
             await axios.put(url, values).then((response) => {
@@ -64,7 +60,6 @@ const EditPage = (props) => {
                         isClosable: true,
                     })                
                     setIsLoading(false)
-                    return router.push("/admin/users")
                 }            
             })            
         } catch (error) {
@@ -83,30 +78,25 @@ const EditPage = (props) => {
 
     useEffect(() => {
         let defaultValues = {}
-        defaultValues.first_name = props.item.first_name ?? null
-        defaultValues.last_name = props.item.last_name ?? null
-        defaultValues.email = props.item.email ?? null
-        defaultValues.role_id = props.item.roles_id ?? null
+        defaultValues.first_name = props.profile.first_name ?? null
+        defaultValues.last_name = props.profile.last_name ?? null
+        defaultValues.email = props.profile.email ?? null
         reset({ ...defaultValues })
     }, [])
 
     return (
         <>
             <Head>
-                <title>Edit User</title>
+                <title>My Profile</title>
             </Head>
-            <DashboardLayout title="Edit User">
+            <DashboardLayout title="My Profile">
                 <Breadcrumb mb={4} fontWeight='medium' fontSize='sm'>
                     <BreadcrumbItem>
                         <Link scroll={false} href='/admin/dashboard'>Home</Link>
                     </BreadcrumbItem>
 
-                    <BreadcrumbItem>
-                        <Link  scroll={false} href='/admin/users'>Users</Link>
-                    </BreadcrumbItem>
-
                     <BreadcrumbItem isCurrentPage>
-                        <Link  scroll={false} href='#'>Edit Users</Link>
+                        <Link  scroll={false} href='#'>My Profile</Link>
                     </BreadcrumbItem>
                 </Breadcrumb>
                 <div>
@@ -143,8 +133,17 @@ const EditPage = (props) => {
                                     />
                                     <Text color={'red'} className="invalid-feedback">{errors.email?.message}</Text>
                                 </FormControl>
+                                <FormControl mt={10}>
+                                    <FormLabel htmlFor='old_password'>Old Password</FormLabel>
+                                    <Input
+                                        id='old_password'
+                                        type='password'
+                                        {...register('old_password')}
+                                    />
+                                    <Text color={'red'} className="invalid-feedback">{errors.old_password?.message}</Text>
+                                </FormControl>
                                 <FormControl>
-                                    <FormLabel htmlFor='password'>Password</FormLabel>
+                                    <FormLabel htmlFor='password'>New Password</FormLabel>
                                     <Input
                                         id='password'
                                         type='password'
@@ -153,15 +152,13 @@ const EditPage = (props) => {
                                     <Text color={'red'} className="invalid-feedback">{errors.password?.message}</Text>
                                 </FormControl>
                                 <FormControl>
-                                    <FormLabel htmlFor='password'></FormLabel>
-                                    <CheckboxGroup defaultValue={ props.item.roles_id } colorScheme='green'>
-                                        <Stack spacing={[1, 5]} direction={['column', 'row']}>
-                                            { props.roles.map((role) => (
-                                                <Checkbox {...register('role_id')}  key={ role.id.toString() } value={ role.id.toString() }>{ role.name }</Checkbox>
-                                            )) }
-                                        </Stack>
-                                    </CheckboxGroup>                                    
-                                    <Text color={'red'} className="invalid-feedback">{errors.role_id?.message}</Text>
+                                    <FormLabel htmlFor='password_confirmation'>Confirm New Password</FormLabel>
+                                    <Input
+                                        id='password_confirmation'
+                                        type='password'
+                                        {...register('password_confirmation')}
+                                    />
+                                    <Text color={'red'} className="invalid-feedback">{errors.password_confirmation?.message}</Text>
                                 </FormControl>
 
                                 <Stack direction='row' spacing={4}>
@@ -200,35 +197,26 @@ const EditPage = (props) => {
     )
 }
 
-EditPage.auth = true 
+ProfilePage.auth = true 
 
 export async function getServerSideProps(context) {
-    const { id } = context.params
     let session = await getSession(context)
-    let roles = []
-
-    await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/roles`).then((response) => {
-        roles = response.data.data.rows
-    })            
 
     axios.defaults.headers.common['Authorization'] = `Bearer ${session.accessToken}`
-    let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`
-    const item = await axios.get(url).then((response) => {
+    let url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/profiles/active-profile`
+    const profile = await axios.get(url).then((response) => {
         if (!response.error) {
             let returnedData = response.data.data
-            returnedData.roles_id = returnedData.roles_id.map(num => String(num))
             return returnedData
         }
-    })            
-
+    })           
+    
     return {
         props: {
-            id: id,
             sessions: session,
-            item: item,
-            roles: roles            
+            profile: profile,
         }
     }
 }
 
-export default EditPage
+export default ProfilePage

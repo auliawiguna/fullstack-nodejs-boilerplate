@@ -233,9 +233,9 @@ const validate = {
           first_name: Joi.string(),
           last_name: Joi.string(),
           email: Joi.string().email({ tlds: { allow: false } }).external(uniqueEmail),
-          password: Joi.string(),
-          password_confirmation: Joi.string().when('password', {is: Joi.exist(), then: Joi.valid(Joi.ref('password')).required(), otherwise: Joi.optional()}),
-          old_password: Joi.string().when('password', {is: Joi.exist(), then: Joi.required().external(isOldPasswordValid), otherwise: Joi.optional()}),
+          password: Joi.string().allow(null),
+          password_confirmation: Joi.string().allow(null).when('password', {is: Joi.exist(), then: Joi.valid(Joi.ref('password')).required(), otherwise: Joi.optional()}),
+          old_password: Joi.string().allow(null).when('password', {is: Joi.exist(), then: Joi.required().external(isOldPasswordValid), otherwise: Joi.optional()}),
         }).strict()
     
         const payload = await schema.validateAsync(req.body)

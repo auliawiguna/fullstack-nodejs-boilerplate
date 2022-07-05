@@ -12,5 +12,6 @@ router.put('/update', [morgan("combined")], Auth, verified, validateUser.profile
 router.post('/change-avatar', [morgan("combined")], Auth, verified, Profile.changeAvatar)
 router.get('/stream-avatar/:id', [morgan("combined")], Profile.streamAvatar)
 router.get('/active-sessions', [morgan("combined")], Auth, verified, Profile.activeSessions)
+router.get('/active-profile', [morgan("combined")], Auth, verified, Profile.activeProfile)
 
 export default router
