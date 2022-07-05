@@ -24,6 +24,13 @@ class User extends Sequelize.Model {
         onDelete: 'CASCADE',
       })        
     }
+    if (!this.hasAlias('forgetpassword')) {
+      this.hasMany(forgetpasswordtokenModel, {
+        foreignKey: 'user_id',
+        as: 'forgetpassword',
+        onDelete: 'CASCADE',
+      })        
+    }
     if (!this.hasAlias('roles')) {
       this.belongsToMany(roleModel, { through: roleuserModel, as: 'roles', foreignKey: 'user_id', onDelete: 'cascade' })      
     }

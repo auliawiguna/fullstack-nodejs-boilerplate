@@ -179,7 +179,7 @@ export default class AuthController {
      *
      * @return  {mixed}
      */
-     validate = async (req, res) => {
+    validate = async (req, res) => {
         let { token } = req.body
         try {
             token = token.toString()
@@ -226,7 +226,41 @@ export default class AuthController {
             }
         } catch (error) {
             return APIResponses.serverError(res, error.message)
-        }        
-
+        }
     }
+
+    forgotPassword = async (req, res) => {
+        let { email } = req.body
+        try {
+            let user = await userModel.findOne({
+                where: {
+                    email: email
+                }
+            })
+
+            if (user === null) {
+                return APIResponses.unprocessableEntity(res, "Email does not exists")
+            } else {
+                let tokenPassword = stringHelper.randomNumber().toString()
+        
+                let token = await forgetpasswordtokenModel.updateOrCreate({
+                    where: {
+                        user_id: user.id
+                    }
+                }, {
+                    token: hashingHelper.createSha256Hash(tokenPassword),
+                    email: email,
+                    user_id: user.id,
+                    expired_at: Math.floor(Date.now() / 1000) + 3600
+                }) 
+
+                // //Send mail
+                await notificationsHelper.forgotPassword(email, tokenPassword, user.first_name)
+
+                return APIResponses.success(res, token, 'Success')
+            }
+        } catch (error) {
+            return APIResponses.serverError(res, error.message)
+        }        
+    }    
 }

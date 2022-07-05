@@ -34,6 +34,38 @@ const registrationEmail = (emailTo, token, name) => {
 }
 
 /**
+ * Handle forgot password email
+ *
+ * @param   string  emailTo  userModel.email
+ * @param   string  token    6 digits token
+ * @param   string  name     userModel.first_name
+ *
+ * @return  mixed
+ */
+ const forgotPassword = (emailTo, token, name) => {
+  dotenv.config()
+
+  const messages = {
+    from: `${process.env.APP_NAME} <${process.env.APP_EMAIL}>`,
+    to: emailTo,
+    subject: `Change password request`,
+    template: 'forgot_password',
+    context: {
+      name: name,
+      token: token
+    }
+  }
+
+  const options = {
+    attempts: 2,
+  }
+  const data = messages
+
+  // Producer: adds jobs to que, in this case emails to be sent out upon signup
+  sendMailQueue.add(data, options)
+}
+
+/**
  * Handle change profile notification
  *
  * @param   string  emailTo            userModel.email
@@ -108,6 +140,6 @@ sendMailQueue.process(async job => {
   await MAILER.sendMail(job.data)
 })
 
-const Notifications = { registrationEmail, changedProfile, changedEmail }
+const Notifications = { registrationEmail, changedProfile, changedEmail, forgotPassword }
 
 export default Notifications
