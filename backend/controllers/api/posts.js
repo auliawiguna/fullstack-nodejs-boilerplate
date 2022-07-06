@@ -3,9 +3,14 @@ import slugify from 'slugify'
 
 export default class PostController {
     index = async (req, res) => {
-        const posts = await postsModel.findAll({
-            include : 'postgroups'
-        })
+        let limit = req.query.per_page ?? 10
+        let offset = 0
+        let page = req.query.page ?? 1
+        offset = limit * (page - 1);
+
+        const posts = await postRepository.search(limit, offset, req.query.search)
+
+        posts.pages = Math.ceil(posts.count / limit)
 
         return APIResponses.success(res, posts, 'Success')
     }

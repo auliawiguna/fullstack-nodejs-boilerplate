@@ -12,7 +12,7 @@ class PostGroup extends Sequelize.Model {
   static associate(models) {
     // define association here
     if (!this.hasAlias('posts')) {
-      this.belongsTo(postsModel, {
+      this.belongsTo(postModel, {
         foreignKey: 'post_id',
         as: 'posts',
       })

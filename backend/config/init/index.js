@@ -177,6 +177,8 @@ const initialiser = async () => {
   if (process.env.NODE_ENV!=='production') {
     console.log('Global Variable :')
     console.log(global)            
+    console.log('Global Constant :')
+    console.table(global['constants'])            
   }
 } 
 
