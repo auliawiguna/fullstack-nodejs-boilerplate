@@ -31,7 +31,7 @@ A NodeJS Fullstact Starter Pack project consists of :
 - [TinyMCE Editor](https://github.com/tinymce/tinymce)
 - Autoload Models in backend, just put your model class in `backend/models` and it can be called anywhere by call `modelnameModel` e.g `newsModel`
 - Autoload Repositories in backend, just put your repository class in `backend/repositories` and it can be called anywhere by call `repositoynameRepository` e.g `newsRepository`
-- Autoload routing in backend, just put your repository class in `backend/routes/*/*` and it can be called anywhere by call its path and name  e.g `backend/routes/api/v2/user` will be generates new endpoints (using plural word) called `{URL}/api/v2/users/*`
+- Autoload routing in backend, just put your repository class in `backend/routes/*/*` and it can be called anywhere by call its path and name  e.g `backend/routes/api/v2/user` will generates new endpoints (using plural word) called `{URL}/api/v2/users/*`
 
 
 
