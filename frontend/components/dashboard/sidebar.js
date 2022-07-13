@@ -2,28 +2,15 @@ import {
   Box,
   Flex,
   Text,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
   VStack,
   useColorModeValue
 } from '@chakra-ui/react';
 import { NavLink } from './nav-link';
 import {
-  Home,
-  UserGroup,
-  Folder,
-  Calendar,
-  Inbox,
-  ChartSquareBar,
   LogoMark,
   LogoOnDark,
-  Template,
-  ClipboardList
 } from '../icons'
-import { FaHome, FaUsers, FaBookmark, FaRobot, FaTable } from "react-icons/fa"
+import { FaHome, FaUsers, FaBookmark, FaRobot, FaTable, FaPencilAlt } from "react-icons/fa"
 
 const SidebarLink = ({ href, children, icon }) => (
   <NavLink href={href}>
@@ -76,6 +63,12 @@ function PageLinks() {
         <Box mr={1} w={6}><FaTable /></Box>
         <Text fontSize="sm" fontWeight="medium">
           Permission Matrix
+        </Text>
+      </SidebarAnchor>
+      <SidebarAnchor href="/admin/posts">
+        <Box mr={1} w={6}><FaPencilAlt /></Box>
+        <Text fontSize="sm" fontWeight="medium">
+          Text Editor
         </Text>
       </SidebarAnchor>
     </VStack>

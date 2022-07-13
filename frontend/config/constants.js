@@ -5,13 +5,4 @@ export const ROUTE = {
 }
 
 
-export const MY_APP = 'Nodecore'
-export const MY_NAME = 'Faisal Karim'
-export const TWITTER_USER_NAME = 'miraklasiaf'
-export const PLATFORM_URL = 'https://dumbbell.now.sh'
-
-export const links = [
-  [Twitter, 'https://twitter.com/miraklasiaf', 'Twitter'],
-  [Github, 'https://github.com/miraklasiaf', 'Github'],
-  [Mail, 'mailto:faisalkarim96@gmail.com', 'Email']
-]
+export const MY_APP = process.env.NEXT_PUBLIC_APP_NAME

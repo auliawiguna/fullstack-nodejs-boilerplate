@@ -9,7 +9,6 @@ import { SessionProvider } from 'next-auth/react'
 import Authenticated from '@middlewares/authenticated'
 import RedirectIfAuthenticated from '@middlewares/redirectIfAuthenticated'
 import React from 'react'
-import { StyleFunctionProps } from '@chakra-ui/theme-tools'
 
 const theme = extendTheme({
   fonts: {
@@ -43,7 +42,6 @@ const theme = extendTheme({
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
 Router.events.on('routeChangeError', () => NProgress.done())
-
 
 export default function MyApp({
   Component,

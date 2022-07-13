@@ -3,7 +3,6 @@ import { Button, IconButton, Flex, useColorModeValue, Menu, MenuButton, MenuList
 import ThemeToggle from '../theme-toggle';
 import MobileNav from './mobile-nav';
 import axios from 'axios'
-import { MY_APP } from '@config/constants';
 import { FaSignOutAlt, FaHome, FaUserCog, FaUserAstronaut } from "react-icons/fa"
 import { useSession, signOut } from "next-auth/react"
 import Swal from 'sweetalert2'
@@ -60,7 +59,7 @@ export default function Header() {
           <Flex align="center">
             <NextLink href="/dashboard" passHref>
               <Button as="a" variant="ghost" px={0} fontWeight="bold">
-                {MY_APP}
+                {process.env.NEXT_PUBLIC_APP_NAME}
               </Button>
             </NextLink>
           </Flex>

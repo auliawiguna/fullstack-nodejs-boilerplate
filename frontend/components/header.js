@@ -24,7 +24,7 @@ export default function Header() {
             <Flex align="center">
               <NextLink href="/" passHref>
                 <Button as="a" variant="ghost" px={0} fontWeight="bold">
-                  {MY_APP}
+                  {process.env.NEXT_PUBLIC_APP_NAME}
                 </Button>
               </NextLink>
             </Flex>
