@@ -28,7 +28,7 @@ const listApiRoute = async (app) => {
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = path.dirname(__filename)
 
-  const models = {}
+  const routes = {}
   
   const allApiRoute = await getAllFiles(`${join(__dirname, '../routes/api')}`)
 
@@ -36,12 +36,12 @@ const listApiRoute = async (app) => {
     let urlPath = Pluralize(filePath.replace(__dirname, '').replace('.js', '').toLowerCase())
     var model = await import(filePath)
     app.use(`${urlPath}`, model.default)    
-    models[urlPath] = filePath
+    routes[urlPath] = filePath
   }
 
   if (process.env.NODE_ENV!=='production') {
       console.log('API Route List :')
-      console.table(models)            
+      console.table(routes)            
   }
 
   return app
@@ -51,7 +51,7 @@ const listWebRoute = async (app) => {
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = path.dirname(__filename)
 
-  const models = {}
+  const routes = {}
   
   const allApiRoute = await getAllFiles(`${join(__dirname, '../routes/web')}`)
 
@@ -59,12 +59,12 @@ const listWebRoute = async (app) => {
     let urlPath = Pluralize(filePath.replace(__dirname, '').replace('.js', '').toLowerCase())
     var model = await import(filePath)
     app.use(`${urlPath}`, model.default)    
-    models[urlPath] = filePath
+    routes[urlPath] = filePath
   }
 
   if (process.env.NODE_ENV!=='production') {
       console.log('Web Route List :')
-      console.table(models)            
+      console.table(routes)            
   }
 
   return app
