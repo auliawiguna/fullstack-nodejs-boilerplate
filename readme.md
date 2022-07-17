@@ -15,7 +15,31 @@ A NodeJS Fullstact Starter Pack project consists of :
 
 
 ## Shaka Backend CLI Commands
-- `npm run shaka route:list` : List all routes 
+| Command                                         | Remark                                     |
+|-------------------------------------------------|--------------------------------------------|
+| npm run shaka route:list                        | List all routes                            |
+| npx sequelize db:migrate                        | Run pending migrations                     |
+| npx sequelize db:migrate:schema:timestamps:add  | Update migration table to have timestamps  |
+| npx sequelize db:migrate:status                 | List the status of all migrations          |
+| npx sequelize db:migrate:undo                   | Reverts a migration                        |
+| npx sequelize db:migrate:undo:all               | Revert all migrations ran                  |
+| npx sequelize db:seed                           | Run specified seeder                       |
+| npx sequelize db:seed:undo                      | Deletes data from the database             |
+| npx sequelize db:seed:all                       | Run every seeder                           |
+| npx sequelize db:seed:undo:all                  | Deletes data from the database             |
+| npx sequelize db:create                         | Create database specified by configuration |
+| npx sequelize db:drop                           | Drop database specified by configuration   |
+| npx sequelize init                              | Initializes project                        |
+| npx sequelize init:config                       | Initializes configuration                  |
+| npx sequelize init:migrations                   | Initializes migrations                     |
+| npx sequelize init:models                       | Initializes models                         |
+| npx sequelize init:seeders                      | Initializes seeders                        |
+| npx sequelize migration:generate                | Generates a new migration file             |
+| npx sequelize migration:create                  | Generates a new migration file             |
+| npx sequelize model:generate                    | Generates a model and its migration        |
+| npx sequelize model:create                      | Generates a model and its migration        |
+| npx sequelize seed:generate                     | Generates a new seed file                  |
+| npx sequelize seed:create                       | Generates a new seed file                  |
 
 ## Features
 
