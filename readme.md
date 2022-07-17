@@ -14,6 +14,8 @@ A NodeJS Fullstact Starter Pack project consists of :
 **Frontend:** NextJS, React, ChakraUI
 
 
+## Shaka Backend CLI Commands
+- `npm run shaka route:list` : List all routes 
 
 ## Features
 
