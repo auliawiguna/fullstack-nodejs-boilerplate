@@ -7,13 +7,13 @@
   "scripts": {
     "test": "mocha tests/*.js --exit",
     "start": "node app.js",
-    "shaka": "node commands/default.js",
     "dev": "nodemon app.js"
   },
   "imports": {
     "#controllers/*": "./controllers/*",
     "#config/*": "./config/*",
     "#validators/*": "./validators/*",
+    "#stubs/*": "./stubs/*",
     "#middlewares/*": "./middlewares/*"
   },
   "author": "Aulia",

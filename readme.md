@@ -17,7 +17,8 @@ A NodeJS Fullstact Starter Pack project consists of :
 ## Shaka Backend CLI Commands
 | Command                                         | Remark                                     |
 |-------------------------------------------------|--------------------------------------------|
-| npm run shaka route:list                        | List all routes                            |
+| node shaka route:list                           | List all routes                            |
+| node shaka make:controller                      | Create Backend's controller and route      |
 | npx sequelize db:migrate                        | Run pending migrations                     |
 | npx sequelize db:migrate:schema:timestamps:add  | Update migration table to have timestamps  |
 | npx sequelize db:migrate:status                 | List the status of all migrations          |

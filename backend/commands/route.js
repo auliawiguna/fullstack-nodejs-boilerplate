@@ -41,7 +41,7 @@ const routeList = async() => {
         model.default.stack.forEach(function(r){
         if (r.route && r.route.path){
                 routes.push({
-                    'URL' : `${urlPath}/${r.route.path}`,
+                    'URL' : `${urlPath}${r.route.path}`,
                     'Source Code' : filePath,
                     'Methods' : Object.keys(r.route.methods)
                 })

@@ -1,0 +1,13 @@
+import express from 'express'
+import morgan from 'morgan'
+import {ControllerName}Controller from '#controllers/api/{ControllerFileName}.js'
+const {ControllerName} = new {ControllerName}Controller
+const router = express.Router()
+
+router.get('/', [morgan("combined")], {ControllerName}.index)
+router.get('/:id', [morgan("combined")], {ControllerName}.show)
+router.post('/', [morgan("combined")], {ControllerName}.store)
+router.put('/:id', [morgan("combined")], {ControllerName}.update)
+router.delete('/:id', [morgan("combined")], {ControllerName}.destroy)
+
+export default router
