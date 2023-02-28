@@ -18,7 +18,7 @@ const Home = (props) => {
 
       <main className={styles.main}>
 
-      <Header sessions={ props.sessions }></Header>
+        <Header sessions={ props.sessions }></Header>
 
         <h1 className={styles.title}>
           Welcome to Shaka JS Starter Pack
@@ -37,7 +37,6 @@ const Home = (props) => {
           Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>
         </p>
-
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>

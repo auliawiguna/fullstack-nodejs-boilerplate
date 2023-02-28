@@ -5,40 +5,40 @@ import ThemeToggle from './theme-toggle'
 const Header = ({ sessions }) => {
   const bgColor = useColorModeValue('white', 'gray.900')
 
-    const LoginButton = () => {
-        if (sessions) {
-            return (
-                <>
-                    <NextLink
-                        href={ `/admin/dashboard` }
-                        >
-                        <Button as="a" variant="ghost" px={5} fontWeight="bold">
-                            Back to Dashboard
-                        </Button>
-                    </NextLink>
-                </>
-            )        
-        } else {
-            return (
-                <>
-                    <NextLink
-                        href={ `/register` }
-                        >
-                        <Button as="a" variant="ghost" px={5} fontWeight="bold">
-                            Sign Up
-                        </Button>
-                    </NextLink>
-                    <NextLink
-                        href={ `/auth` }
-                        >
-                        <Button as="a" variant="ghost" px={5} fontWeight="bold">
-                            Sign In
-                        </Button>
-                    </NextLink>
-                </>        
-            )
-        }
-    }
+  const LoginButton = () => {
+      if (sessions) {
+        return (
+          <>
+            <Button variant="ghost" px={5} fontWeight="bold">
+              <NextLink
+                href={ `/admin/dashboard` }
+              >
+                Back to Dashboard
+              </NextLink>
+            </Button>
+          </>
+        )        
+      } else {
+        return (
+          <>
+            <Button variant="ghost" px={5} fontWeight="bold">
+              <NextLink
+                href={ `/register` }
+                >
+                  Sign Up
+              </NextLink>
+            </Button>
+            <Button variant="ghost" px={5} fontWeight="bold">
+              <NextLink
+                href={ `/auth` }
+                >
+                  Sign In
+              </NextLink>
+            </Button>
+          </>        
+        )
+      }
+  }
 
 
   return (
@@ -54,21 +54,19 @@ const Header = ({ sessions }) => {
       bg={bgColor}
       borderBottomWidth="1px"
     >
-    <Flex w="full" align="center" justify="center">
+      <Flex w="full" align="center" justify="center">
         <Flex w="full" align="center" justify="space-between">
-                <Flex align="center">
-                    <NextLink href="/" passHref>
-                        <Button as="a" variant="ghost" px={0} fontWeight="bold">
-                            { process.env.NEXT_PUBLIC_APP_NAME }
-                        </Button>
-                    </NextLink>
-                </Flex>
-                <Flex>
-                    <LoginButton se />
-                    <ThemeToggle />
-                </Flex>
+            <Flex align="center">
+              <NextLink href="/" passHref>
+                  { process.env.NEXT_PUBLIC_APP_NAME }
+              </NextLink>
+            </Flex>
+            <Flex>
+              <LoginButton />
+              <ThemeToggle />
             </Flex>
         </Flex>
+      </Flex>
     </Flex>
   );
 }
